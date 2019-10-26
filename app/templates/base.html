@@ -1,0 +1,39 @@
+{% extends 'bootstrap/base.html' %}
+
+{% block title %}
+    {% if title %}{{ title }}{% endif %} - Transport Nantes
+{% endblock %}
+
+{% block navbar %}
+    <nav class="navbar navbar-default">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+		<a class="navbar-brand" href="{{ url_for('main.index', tag=tag) }}"><img src={{ url_for('static', filename='TN-logo_colored.png') }} alt="Transport Nantes logo" width="50%""></a>
+            </div>  <!-- navbar-header -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+         <ul class="nav navbar-nav">
+         <li><a href="{{ url_for('main.index', tag=tag) }}">{{ 'Accueil' }}</a></li>
+         <li><a href="{{ url_for('main.velopolitain', tag=tag) }}">{{ 'Vélopolitain' }}</a></li>
+         <li><a href="{{ url_for('main.chronotrain', tag=tag) }}">{{ 'Chronotrain' }}</a></li>
+         <li><a href="{{ url_for('main.municipales', tag=tag) }}">{{ 'Municipales' }}</a></li>
+         </ul>
+         </div>
+        </div>
+    </nav>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        {% block app_content %}{% endblock %}
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+{% endblock %}

@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block app_content %}
+<div class="row">
+    <div class="col-lg-12">
+	<h1>Un Chronotrain à Nantes</h1>
+	<p>
+	    Nantes à besoin de plus de mobilité. Sans payer cher, tant
+	    mieux ! Nos TERs offrent une belle solution.
+	</p>
+	<p>
+	    Pour agir, nous avons besoin de votre voix.
+	</p>
+
+	<p><emph>Transport Nantes est Un lobby citoyen qui milite pour des
+	    politiques ambitieuses en faveur des transports doux et plus
+	    efficace pour chacun – tramway, bus, vélo, pied, PMU, trottinette
+	    : à vous de choisir pour vous.</emph>
+	</p>
+
+<p align="center"><a href="https://www.helloasso.com/associations/transport-nantes/adhesions/adhesion-transport-nantes-2019/" class="btn btn-primary btn-lg" role="button">J'adhère</a></p>
+
+	<h2>Toutes les 15 minutes</h2>
+
+	<p>Notre réseau de TER est sous-exploité. Les rails, les
+	    chiminots, et le matériel sont déjà présents.</p>
+
+	<p>Sur le coeur du réseau, Transport Nantes propose
+	    d’augmenter la fréquence de service à toutes les 15 minutes, toute
+	    la journée. Rien à construire, rien à acheter.  C’est le
+	    Chronotrain.
+	</p>
+
+	<img src="{{ url_for('static', filename='chronotrain/rail-tout-75.png',
+		  tag=tag) }}" style="width:100%">
+
+
+	<h2>On fait quoi ensemble ?</h2>
+	<p>Notre projet commence d’une façon simple : nous prenons la
+	parole à nos élus (et surtout en amont aux élections
+	municipales de 2020). Pour ce faire, nous avons besoin de
+	vous. C’est votre soutien qui nous donne la force d’agir. Et
+	c’est votre participation (à n’importe quel montant) qui nous
+	donne la crédibilité d’être entendu.
+	</p>
+
+	<h3>Participez!</h3>
+	<p>Nous avons mis un demi-siècle à mettre en place un modèle
+	    de système urbain ultra-dépendant de la voiture. Le
+	    transformer en un système plus sain, plus efficace, qui offre
+	    un choix crédible à chacun ne se fera pas du jour au
+	    lendemain. Mais nous proposons tout simplement de commencer
+	    aujourd’hui, ensemble, à construire ce que nous voudrions
+	    donner un jour à nos petits enfants.
+	</p>
+
+	<p>
+	    Votre voix nous êtes précieux. C’est ce qui nous donne la
+	    force de porter la nôtre.
+	</p>
+
+	<p align="center"><a href="https://www.helloasso.com/associations/transport-nantes/adhesions/adhesion-transport-nantes-2019/" class="btn btn-primary btn-lg" role="button">J'adhère</a></p>
+    </div>
+</div>
+
+{% endblock %}
