@@ -1,6 +1,10 @@
 {% extends "base.html" %}
 
 {% block app_content %}
-    <h1>{{ 'Not Found' }}</h1>
-    <p><a href="{{ url_for('main.index') }}">{{ 'Back' }}</a></p>
+<h1>{{ "[404] Je n'ai pas trouvé cette page." }}</h1>
+  {% if tag is defined %}
+    <p><a href="{{ url_for('main.index', tag=tag) }}">{{ 'Back' }}</a></p>
+  {% else %}
+    <p><a href="{{ url_for('main.index_root') }}">{{ 'Back' }}</a></p>
+  {% endif %}
 {% endblock %}

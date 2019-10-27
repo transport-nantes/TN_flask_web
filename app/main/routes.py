@@ -43,15 +43,18 @@ def municipales_root():
 
 
 
+@bp.route('/D/<tag>/accueil/', methods=['GET', 'POST'])
 @bp.route('/D/<tag>/accueil', methods=['GET', 'POST'])
 def index(tag):
     return render_template('index.html', title='Home Sweet Home', tag=tag)
 
 @bp.route('/D/<tag>/chronotrain/')
+@bp.route('/D/<tag>/chronotrain')
 def chronotrain(tag):
     return render_template('chronotrain.html', tag=tag), 404
 
 @bp.route('/D/<tag>/velopolitain/')
+@bp.route('/D/<tag>/velopolitain')
 def velopolitain(tag):
     return render_template('velopolitain.html', tag=tag), 404
 
@@ -64,6 +67,7 @@ def chantenay(tag):
     return render_template('chantenay.html', tag=tag), 404
 
 @bp.route('/D/<tag>/municipales/')
+@bp.route('/D/<tag>/municipales')
 def municipales(tag=None):
     return render_template('municipales.html', tag=tag), 404
 
