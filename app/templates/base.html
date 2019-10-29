@@ -1,7 +1,7 @@
 {% extends 'bootstrap/base.html' %}
 
 {% block title %}
-    {% if title %}{{ title }}{% endif %} - Transport Nantes
+    {% if title %}{{ title }}{% endif %}Transport Nantes
 {% endblock %}
 
 {% block navbar %}
@@ -22,6 +22,7 @@
          <li><a href="{{ url_for('main.velopolitain', tag=tag) }}">{{ 'Vélopolitain' }}</a></li>
          <li><a href="{{ url_for('main.chronotrain', tag=tag) }}">{{ 'Chronotrain' }}</a></li>
          <li><a href="{{ url_for('main.municipales', tag=tag) }}">{{ 'Municipales' }}</a></li>
+         <li><a href="{{ url_for('main.sponsor', tag=tag) }}">{{ 'Sponsor' }}</a></li>
          </ul>
          </div>
         </div>
@@ -35,5 +36,7 @@
 {% endblock %}
 
 {% block scripts %}
-    {{ super() }}
+    {% block scripts1 %}{% endblock %}
+        {{ super() }}
+    {% block scripts2 %}{% endblock %}
 {% endblock %}
