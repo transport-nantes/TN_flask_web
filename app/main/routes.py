@@ -76,6 +76,11 @@ def municipales(tag=None):
 def sponsor(tag=None):
     return render_template('sponsor.html', tag=tag), 404
 
+@bp.route('/D/<tag>/aligned/')
+@bp.route('/D/<tag>/aligned')
+def aligned(tag=None):
+    return render_template('aligned.html', tag=tag), 404
+
 @bp.route('/D/<tag>/ecole')
 def ecole(tag):
     return render_template('ecole.html', tag=tag), 404
