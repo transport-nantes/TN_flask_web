@@ -99,36 +99,12 @@
 		<li><a href="https://placeauvelovignoblenantais.fr/" target="_blank"><i class="icon-globe"></i></a></li>
 		<li><a href="https://twitter.com/VeloVignoble44" target="_blank"><i class="icon-twitter"></i></a></li>
 		<li><a href="https://www.facebook.com/placeauvelovignoblenantais/" target="_blank"><i class="icon-facebook"></i></a></li>
-		<li class="disabled"><a href="https://www.instagram.com/placeauvelovignoblenantais/" target="_blank"><i class="icon-instagram"></i></a></li>
+		<li><a href="https://www.instagram.com/placeauvelovignoblenantais/" target="_blank"><i class="icon-instagram"></i></a></li>
 	    </ul>
 
 	</p>
     </div>
 </div>
-
-{#
-<div class="row">
-    <div class="col-md-2 col-sm-3">
-	<p>
-	<img src="{{ url_for('static', filename='aligned/',
-		  tag=tag) }}" style="width:80%">
-	</p>
-    </div>
-    <div class="col-md-10 col-sm-9">
-	<p>
-	    <strong>Collectif Transport</strong> promue le projet
-    Étoile Ferroviaire.
-
-	    <ul class="pagination">
-		<li class="disabled"><a href="" target="_blank"><i class="icon-globe"></i></a></li>
-		<li class="disabled"><a href="" target="_blank"><i class="icon-twitter"></i></a></li>
-		<li class="disabled"><a href="" target="_blank"><i class="icon-facebook"></i></a></li>
-		<li class="disabled"><a href="" target="_blank"><i class="icon-instagram"></i></a></li>
-	    </ul>
-	</p>
-    </div>
-</div>
-#}
 
 <div class="row">
     <div class="col-md-2 col-sm-3">
@@ -203,7 +179,30 @@
 </div>
 
 
-<!-- Pas une asso  -->
+<div class="row">
+    <div class="col-md-2 col-sm-3">
+	<p>
+	    {#
+	<img src="{{ url_for('static', filename='aligned/fnaut.jpg',
+		  tag=tag) }}" style="width:80%">
+	#}
+	</p>
+    </div>
+    <div class="col-md-10 col-sm-9">
+	<p>
+	    <strong>Association Nantaise Déplacement Environnement</strong> promue
+	    les déplacements en transports collectifs.
+	    
+	    <ul class="pagination">
+		<li><a href="http://ande-nantes.fr/" target="_blank"><i class="icon-globe"></i></a></li>
+		<li class="disabled"><a href="" target="_blank"><i class="icon-twitter"></i></a></li>
+		<li class="disabled"><a href="" target="_blank"><i class="icon-facebook"></i></a></li>
+		<li class="disabled"><a href="" target="_blank"><i class="icon-instagram"></i></a></li>
+	    </ul>
+	</p>
+    </div>
+</div>
+
 
 <h2>Non-associations</h2>
 
@@ -285,5 +284,29 @@
     </div>
 </div>
 
+
+<div class="row">
+    <div class="col-md-2 col-sm-3">
+	<p>
+	    {#
+	    <img src="{{ url_for('static', filename='aligned/',
+		      tag=tag) }}" style="width:80%">
+	    #}
+	</p>
+    </div>
+    <div class="col-md-10 col-sm-9">
+	<p>
+	    <strong>Collectif Transport</strong> promue le projet
+    Étoile Ferroviaire.
+
+	    <ul class="pagination">
+		<li class="disabled"><a href="" target="_blank"><i class="icon-globe"></i></a></li>
+		<li class="disabled"><a href="" target="_blank"><i class="icon-twitter"></i></a></li>
+		<li class="disabled"><a href="" target="_blank"><i class="icon-facebook"></i></a></li>
+		<li class="disabled"><a href="" target="_blank"><i class="icon-instagram"></i></a></li>
+	    </ul>
+	</p>
+    </div>
+</div>
 
 {% endblock %}
