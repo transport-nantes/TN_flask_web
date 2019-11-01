@@ -4,6 +4,12 @@
     {% if title %}{{ title }}{% endif %}Transport Nantes
 {% endblock %}
 
+{% block styles %}
+{{ super() }}
+<!-- Font Awesome -->
+<link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+{% endblock styles %}
+
 {% block navbar %}
     <nav class="navbar navbar-default">
         <div class="container">
