@@ -78,8 +78,17 @@ def sponsor(tag=None):
 
 @bp.route('/D/<tag>/aligned/')
 @bp.route('/D/<tag>/aligned')
+@bp.route('/D/<tag>/asso/')
+@bp.route('/D/<tag>/asso')
 def aligned(tag=None):
     return render_template('aligned.html', tag=tag), 404
+
+@bp.route('/D/<tag>/benevole/')
+@bp.route('/D/<tag>/benevole')
+@bp.route('/D/<tag>/bénévole/')
+@bp.route('/D/<tag>/bénévole')
+def volunteer(tag=None):
+    return render_template('volunteer.html', tag=tag), 404
 
 @bp.route('/D/<tag>/ecole')
 def ecole(tag):
