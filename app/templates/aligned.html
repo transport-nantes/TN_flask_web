@@ -85,30 +85,6 @@
 <div class="row">
     <div class="col-md-2 col-sm-3">
 	<p>
-	    <img src="{{ url_for('static', filename='aligned/pavvn.jpg',
-		      tag=tag) }}" style="width:80%">
-	</p>
-    </div>
-    <div class="col-md-10 col-sm-9">
-	<p>
-	    <strong>Place au Vélo Vignoble Nantais</strong> favorise
-    la pratique du vélo et par extension des transports doux sur le
-    pays du vignoble nantais.
-
-	    <ul class="pagination">
-		<li><a href="https://placeauvelovignoblenantais.fr/" target="_blank"><i class="icon-globe"></i></a></li>
-		<li><a href="https://twitter.com/VeloVignoble44" target="_blank"><i class="icon-twitter"></i></a></li>
-		<li><a href="https://www.facebook.com/placeauvelovignoblenantais/" target="_blank"><i class="icon-facebook"></i></a></li>
-		<li><a href="https://www.instagram.com/placeauvelovignoblenantais/" target="_blank"><i class="icon-instagram"></i></a></li>
-	    </ul>
-
-	</p>
-    </div>
-</div>
-
-<div class="row">
-    <div class="col-md-2 col-sm-3">
-	<p>
 	<img src="{{ url_for('static', filename='aligned/mn.jpg',
 		  tag=tag) }}" style="width:80%">
 	</p>
@@ -125,6 +101,30 @@
 		<li><a href="https://twitter.com/NantesMetro" target="_blank"><i class="icon-twitter"></i></a></li>
 		<li><a href="https://www.facebook.com/NantesMetro/" target="_blank"><i class="icon-facebook"></i></a></li>
 		<li class="disabled"><a href="" target="_blank"><i class="icon-instagram"></i></a></li>
+	    </ul>
+
+	</p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-2 col-sm-3">
+	<p>
+	    <img src="{{ url_for('static', filename='aligned/pavvn.jpg',
+		      tag=tag) }}" style="width:80%">
+	</p>
+    </div>
+    <div class="col-md-10 col-sm-9">
+	<p>
+	    <strong>Place au Vélo Vignoble Nantais</strong> favorise
+    la pratique du vélo et par extension des transports doux sur le
+    pays du vignoble nantais.
+
+	    <ul class="pagination">
+		<li><a href="https://placeauvelovignoblenantais.fr/" target="_blank"><i class="icon-globe"></i></a></li>
+		<li><a href="https://twitter.com/VeloVignoble44" target="_blank"><i class="icon-twitter"></i></a></li>
+		<li><a href="https://www.facebook.com/placeauvelovignoblenantais/" target="_blank"><i class="icon-facebook"></i></a></li>
+		<li><a href="https://www.instagram.com/placeauvelovignoblenantais/" target="_blank"><i class="icon-instagram"></i></a></li>
 	    </ul>
 
 	</p>
@@ -186,6 +186,7 @@
 	<img src="{{ url_for('static', filename='aligned/fnaut.jpg',
 		  tag=tag) }}" style="width:80%">
 	#}
+	<div><i class="icon-question" style="font-size: 40px;"></i></div>
 	</p>
     </div>
     <div class="col-md-10 col-sm-9">
@@ -292,18 +293,24 @@
 	    <img src="{{ url_for('static', filename='aligned/',
 		      tag=tag) }}" style="width:80%">
 	    #}
+	    <div><i class="icon-question" style="font-size: 40px;"></i></div>
 	</p>
     </div>
     <div class="col-md-10 col-sm-9">
 	<p>
-	    <strong>Collectif Transport</strong> promue le projet
-    Étoile Ferroviaire.
+	    <strong>Collectif Transport</strong> est un collectif
+	    d'associations d'usagers et de syndicats d'entreprises de
+	    transports. Nous échangeons régulièrement avec la région
+	    et la métropole sur les questions du transports et
+	    proposons des évolutions et améliorations souhaitées par
+	    les usagers.  Il promue le projet Étoile Ferroviaire.
 
 	    <ul class="pagination">
 		<li class="disabled"><a href="" target="_blank"><i class="icon-globe"></i></a></li>
 		<li class="disabled"><a href="" target="_blank"><i class="icon-twitter"></i></a></li>
 		<li class="disabled"><a href="" target="_blank"><i class="icon-facebook"></i></a></li>
 		<li class="disabled"><a href="" target="_blank"><i class="icon-instagram"></i></a></li>
+		{# email: collectif-transport.nantes@laposte.net #}
 	    </ul>
 	</p>
     </div>
