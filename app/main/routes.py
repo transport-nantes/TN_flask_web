@@ -51,12 +51,12 @@ def index(tag):
 @bp.route('/D/<tag>/chronotrain/')
 @bp.route('/D/<tag>/chronotrain')
 def chronotrain(tag):
-    return render_template('chronotrain.html', tag=tag), 404
+    return render_template('chronotrain.html', tag=tag)
 
 @bp.route('/D/<tag>/velopolitain/')
 @bp.route('/D/<tag>/velopolitain')
 def velopolitain(tag):
-    return render_template('velopolitain.html', tag=tag), 404
+    return render_template('velopolitain.html', tag=tag)
 
 @bp.route('/D/<tag>/about/')
 def about_transport_nantes(tag):
@@ -69,26 +69,26 @@ def chantenay(tag):
 @bp.route('/D/<tag>/municipales/')
 @bp.route('/D/<tag>/municipales')
 def municipales(tag=None):
-    return render_template('municipales.html', tag=tag), 404
+    return render_template('municipales.html', tag=tag)
 
 @bp.route('/D/<tag>/sponsor/')
 @bp.route('/D/<tag>/sponsor')
 def sponsor(tag=None):
-    return render_template('sponsor.html', tag=tag), 404
+    return render_template('sponsor.html', tag=tag)
 
 @bp.route('/D/<tag>/aligned/')
 @bp.route('/D/<tag>/aligned')
 @bp.route('/D/<tag>/asso/')
 @bp.route('/D/<tag>/asso')
 def aligned(tag=None):
-    return render_template('aligned.html', tag=tag), 404
+    return render_template('aligned.html', tag=tag)
 
 @bp.route('/D/<tag>/benevole/')
 @bp.route('/D/<tag>/benevole')
 @bp.route('/D/<tag>/bénévole/')
 @bp.route('/D/<tag>/bénévole')
 def volunteer(tag=None):
-    return render_template('volunteer.html', tag=tag), 404
+    return render_template('volunteer.html', tag=tag)
 
 @bp.route('/D/<tag>/ecole')
 def ecole(tag):
