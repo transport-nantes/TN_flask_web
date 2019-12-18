@@ -15,9 +15,10 @@ def make_new_tag():
     is merely how we generate them.
 
     """
-    return TAG_CHARS[randint(0,61)] + \
-        TAG_CHARS[randint(0,63)] + TAG_CHARS[randint(0,63)] + \
-        TAG_CHARS[randint(0,63)] + TAG_CHARS[randint(0,63)]
+    tag_char_end = len(TAG_CHARS) - 1
+    return TAG_CHARS[randint(0,tag_char_end)] + \
+        TAG_CHARS[randint(0,tag_char_end)] + TAG_CHARS[randint(0,tag_char_end)] + \
+        TAG_CHARS[randint(0,tag_char_end)] + TAG_CHARS[randint(0,tag_char_end)]
 
 @bp.before_app_request
 def before_request():
