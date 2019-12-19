@@ -1,0 +1,159 @@
+{% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block head %}
+{{ super() }}
+<meta property="og:url"          content="https://www.transport-nantes.com/D/tnrs.fda/2019" />
+<meta property="og:type"         content="website" />
+<meta property="og:title"        content="Doublons les signatures du Vélopolitain" />
+<meta property="og:description"  content="Le Vélopolitain a dépassé les 1000 signatures.  Avec votre soutien, nous dépasserons les 2000 et enverrons un signal bien plus fort à nos élus." />
+<meta property="og:image"        content="{{ url_for('static', filename='velopolitain/1000.webp', _external="True") }}" />
+<meta property="og:image:width"  content="800" />
+<meta property="og:image:height" content="450" />
+<meta name="twitter:card"        content="summary_large_image">
+<meta name="twitter:site"        content="@TransportNantes">
+<meta name="twitter:creator"     content="@TransportNantes">
+<meta name="twitter:title"       content="Doublons les signatures du Vélopolitain">
+<meta name="twitter:description" content="Le Vélopolitain a dépassé les 1000 signatures.  Avec votre soutien, nous dépasserons les 2000 et enverrons un signal bien plus fort à nos élus.">
+<meta name="twitter:image"       content="{{ url_for('static', filename='velopolitain/1000.webp', _external="True") }}">
+{% endblock head %}
+
+{% block app_content %}
+
+<div class="row">
+    <div class="col-lg-12">
+	<h1 class="text-success">Champagne !  </h1>
+	
+	<p class="bg-success"><strong>Je vous écris avec de bonnes nouvelles -- et une
+	    petite demande.</strong>
+	</p>
+
+	<p>Depuis le 15 décembre, nous sommes plus de
+    mille à avoir signé notre pétition “Vélopolitain”. Nous
+    sommes plus de 1000 à avoir demandé au futur président ou à la
+    future présidente de Nantes Métropole un vrai réseau cyclable
+    continu, visible, sécurisé couvrant toute la métropole ! Qu'on se
+    félicite : les candidates à Nantes ainsi que celles et ceux
+    d’autres communes limitrophes nous ont contacté pour échanger sur
+    ce projet qui a suscité leur intérêt. Certains ont même repris nos
+    idées pour leurs programmes.  La presse locale en a également
+    parlé.</p>
+
+	<p>A moins de 100 jours des élections municipales, Transport
+	Nantes compte bien
+	y jouer un rôle majeur pour mettre le vélo au cœur des
+	débats. Car c'est la <strong>politique vélo de la ville et de la
+	métropole pour les six prochaines années qui se joue
+	    maintenant.</strong>
+	</p>
+
+	<p>Ce n'est donc pas le moment de nous reposer sur nos
+	    lauriers !  En effet, <text class="text-success">si le
+	sujet du vélo n'est pas pris au sérieux par les différents
+	    candidats et candidates,</text> on risque de ne pas
+	    bénéficier de beaucoup d'améliorations d'ici 2026.  Faire
+	    la différence <strong>entre
+	    un plan vélo moyen et un plan vélo réellement
+	    ambitieux</strong>, c'est l'objectif de Transport
+	Nantes pour cette campagne.</p>
+
+	<p>Alors agissons ensemble ! En prévision des élections
+	    municipales, il suffit de <strong>deux
+	    gestes simples</strong>
+	    pour continuer à
+	mobiliser dans le but de rendre la métropole vraiment cyclable
+	pour toutes et tous, grands et petits, débutants et experts
+	:</p>
+
+	<ol>
+	    <li><strong>Si vous n'avez pas encore signé la
+		pétition,</strong> c'est <a href="{{ url_for('main.velopolitain', tag=tag) }}">le
+		moment</a>.  Nous avons besoin de
+		votre voix !</li>
+	    <li><strong>Lors des fêtes, demandez à vos proches</strong>, à vos familles
+	    de signer la pétition « Vélopolitain » à leur tour.  Ils
+	    ne sont pas cyclistes ?  Ce n'est pas grave, rappelez-le
+	    que c'est pour votre sécurité.
+		Si
+	    chacun trouve un signataire de plus, nous serons à
+		<strong>2000 signatures dès janvier !</strong></li>
+	    <li><strong>Envoyez un signal encore plus fort</strong> à
+		nos élus et aux candidats par votre adhésion et votre
+		soutien financier à Transport Nantes. <a href="https://www.helloasso.com/associations/transport-nantes/adhesions/fin-d-annee-transport-nantes-2019">Adhérez</a>,
+		même par un petit don, et joignez votre voix à la
+		nôtre.  Votre adhésion envoie un signal bien plus fort
+		que votre signature.</li>
+	</ol>
+
+	<p>
+	    C'est absolument essentiel que notre message joue sans
+	    cesse devant les nantais pendant les 100 jours jusqu'aux
+	    élections.  Votre soutien nous êtes précieux !  Nous avons
+	    établi un budget minimum de 1500 € afin de nous donner les
+	    moyennes d'approfondir notre campagne de communication sur
+	    les 100 jours avant les élections.  Sans que notre message
+	    reste constamment devant les candidats et devant tous les
+	    nantais, notre campagne risque de perdre son poid.
+	    Surtout, nous comptons publier de contenus, visuels et
+	    autres sources d'inspiration pour les équipes des
+	    candidats.  Nous allons aussi réaliser des flyers,
+	    publicités et campagnes de presse à destination des
+	    habitants de la métropole.</p>
+
+	<p> Combien cela vaut-il pour vous ?</p>
+
+	<p align="center"><a href="https://www.helloasso.com/associations/transport-nantes/adhesions/fin-d-annee-transport-nantes-2019" class="btn btn-primary btn-lg" role="button" target="_blank">J'adhère</a> <a
+	href=""
+	class="btn btn-primary btn-lg" role="button" target="_blank">Je signe la petition</a>
+	</p>
+
+    </div>
+</div>
+
+<div class="row"><div class="col-xs-12" style="height:15px;"></div></div>
+
+<div class="row">
+    <div class="col-lg-12">
+	<p>Nous ne sommes pas anonyme : nous sommes vos voisins, vos
+    amis, vos collaborateurs.  Nous sommes là -- et, personnellement,
+    je suis là -- pour toute question ou retour.  Je vous invite à me
+	contacter personnellement à l'adresse mail
+	ci-dessous, tellement le sujet est important.</p>
+
+	<p>Je vous remercie chaleureusement pour vos signatures, votre
+	    mobilisation en cours et celle à venir. </p>
+	
+
+	<p>Vive le vélopolitain ! </p>
+
+	<p>Belles fêtes de fin d'années à toutes et tous.</p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-2 col-sm-3">
+	<img src="{{ url_for('static', filename='jeff-abrahamson-1010.jpg',
+    tag=tag) }}" style="width:100px;">
+    </div>
+    <div class="col-md-10 col-sm-9">
+	<p><a href="mailto:jeff@transport-nantes.com">Jeff Abrahamson</a><br>
+	    Président, Transport Nantes
+	</p>
+    </div>
+</div>
+
+<div class="row"><div class="col-xs-12" style="height:30px;"></div></div>
+
+<div class="row">
+    <div class="col-lg-12">
+	<p><em>Pour les personnes imposables, le don est déductible
+    à hauteur de 66% (un don de 100€ ne vous en coûte que 33). Un reçu
+    fiscal vous sera adressé en début d'année prochaine.
+	    Si vous souhaitez faire un don en dehors de la plateforme,
+	    ou pour toute demande spécifique, vous pouvez nous contacter à
+	    <a href="mailto:mecenat@transport-nantes.com">mecenat@transport-nantes.com</a>.
+	</em></p>
+    </div>
+</div>
+
+{% endblock %}

@@ -59,6 +59,11 @@ def chronotrain(tag):
 def velopolitain(tag):
     return render_template('velopolitain.html', tag=tag)
 
+@bp.route('/D/<tag>/2019/')
+@bp.route('/D/<tag>/2019')
+def velopolitain_2019(tag):
+    return render_template('velopolitain-appeal.html', tag=tag)
+
 @bp.route('/D/<tag>/about/')
 def about_transport_nantes(tag):
     return render_template('about.html', tag=tag), 404
