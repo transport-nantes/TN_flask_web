@@ -45,6 +45,10 @@ def before_request():
         [(this_page_tag, this_page_canonical)] = TAG_REGEX.findall(this_path)
         journey_step.tag = this_page_tag
         journey_step.this_page_canonical = this_page_canonical
+    else:
+        journey_step.tag = ''
+        journey_step.this_page_canonical = '/'
+    journey_step.browser = request.headers.get('User-Agent')
     db.session.add(journey_step)
     db.session.commit()
 
