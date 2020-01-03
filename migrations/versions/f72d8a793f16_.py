@@ -32,7 +32,6 @@ def upgrade():
     sa.Column('screen_width', sa.Integer(), nullable=True),
     sa.Column('screen_height', sa.Integer(), nullable=True),
     sa.Column('screen_resolution', sa.Integer(), nullable=True),
-    sa.Column('browser', sa.String(), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
     # ### end Alembic commands ###

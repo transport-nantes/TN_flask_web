@@ -39,7 +39,11 @@ class UserJourneyStep(db.Model):
     screen_resolution = db.Column(db.Integer())
     # Similarly, we record browser information in case some browsers
     # lead to different behaviour.
-    browser = db.Column(db.String())
+    ua_string = db.Column(db.String())
+    ua_browser = db.Column(db.String())
+    ua_language = db.Column(db.String())
+    ua_platform = db.Column(db.String())
+    ua_version = db.Column(db.String())
 
     def __repr__(self):
         return '<[{tag}]/[{ip}] {microsec}/{city}>'.format(
