@@ -40,3 +40,6 @@ WTForms==2.1
 # Requirements for production.
 psycopg2==2.7.3.1
 gunicorn==20.0.4
+
+# For debugging.
+ipython

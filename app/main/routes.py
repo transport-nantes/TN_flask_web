@@ -1,8 +1,11 @@
 from datetime import datetime
 from flask import render_template, flash, redirect, url_for, request, g, \
-    jsonify, current_app
+    jsonify, current_app, session
+from app import db
 from app.main import bp
+from app.models import UserJourneyStep
 from random import randint
+import re
 
 TAG_CHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 def make_new_tag():
@@ -20,13 +23,33 @@ def make_new_tag():
         TAG_CHARS[randint(0,tag_char_end)] + TAG_CHARS[randint(0,tag_char_end)] + \
         TAG_CHARS[randint(0,tag_char_end)] + TAG_CHARS[randint(0,tag_char_end)]
 
+URL_REGEX = re.compile('https?://([^/]+)/(.*)$')
+TAG_REGEX = re.compile('[DE]/([^/]+)/(.*$)')
+
 @bp.before_app_request
 def before_request():
-    print('before_request')
+    if 'static' == request.endpoint:
+        # This should only happen in dev.  Otherwise, nginx handles static routes directly.
+        return
+    #print(UserJourneyStep.query.all())
+    journey_step = UserJourneyStep()
+    journey_step.ip_hash = '';
+    journey_step.referrer = request.referrer
+    if request.referrer:
+        [(referrer_host, referrer_path)]  = URL_REGEX.findall(request.referrer)
+        journey_step.referrer_host = referrer_host
 
+    journey_step.this_page_url = request.url
+    [(this_host, this_path)]  = URL_REGEX.findall(request.url)
+    if this_path:
+        [(this_page_tag, this_page_canonical)] = TAG_REGEX.findall(this_path)
+        journey_step.tag = this_page_tag
+        journey_step.this_page_canonical = this_page_canonical
+    db.session.add(journey_step)
+    db.session.commit()
 
-@bp.route('/', methods=['GET', 'POST'])
-@bp.route('/accueil', methods=['GET', 'POST'])
+@bp.route('/')
+@bp.route('/accueil')
 def index_root():
     """Assign a session tag.
 
@@ -42,10 +65,8 @@ def index_root():
 def municipales_root():
     return redirect(url_for('main.municipales', tag=make_new_tag()))
 
-
-
-@bp.route('/D/<tag>/accueil/', methods=['GET', 'POST'])
-@bp.route('/D/<tag>/accueil', methods=['GET', 'POST'])
+@bp.route('/D/<tag>/accueil/')
+@bp.route('/D/<tag>/accueil')
 def index(tag):
     return render_template('index.html', title='', tag=tag)
 
@@ -113,39 +134,39 @@ def blog(tag, blog_entry):
     return render_template('blog.html', tag=tag, body='Hello, world!'), 404
 
 ## Legacy paths from old wordpress site.
-@bp.route('/?page_id=397', methods=['GET', 'POST'])
-@bp.route('/page_id=397.html', methods=['GET', 'POST'])
-@bp.route('/?page_id=213', methods=['GET', 'POST'])
-@bp.route('/page_id=213.html', methods=['GET', 'POST'])
+@bp.route('/?page_id=397')
+@bp.route('/page_id=397.html')
+@bp.route('/?page_id=213')
+@bp.route('/page_id=213.html')
 def legacy_index():
     return redirect(url_for('index'))
 
-@bp.route('/?page_id=363', methods=['GET', 'POST'])
-@bp.route('/page_id=363.html', methods=['GET', 'POST'])
-@bp.route('/?page_id=338', methods=['GET', 'POST'])
-@bp.route('/page_id=338.html', methods=['GET', 'POST'])
-@bp.route('/?page_id=324', methods=['GET', 'POST'])
-@bp.route('/page_id=324.html', methods=['GET', 'POST'])
-@bp.route('/?page_id=317', methods=['GET', 'POST'])
-@bp.route('/page_id=317.html', methods=['GET', 'POST'])
+@bp.route('/?page_id=363')
+@bp.route('/page_id=363.html')
+@bp.route('/?page_id=338')
+@bp.route('/page_id=338.html')
+@bp.route('/?page_id=324')
+@bp.route('/page_id=324.html')
+@bp.route('/?page_id=317')
+@bp.route('/page_id=317.html')
 def legacy_chronotrain():
     return redirect(url_for('chronotrain'))
 
-@bp.route('/?page_id=258', methods=['GET', 'POST'])
-@bp.route('/page_id=258.html', methods=['GET', 'POST'])
-@bp.route('/?page_id=243', methods=['GET', 'POST'])
-@bp.route('/page_id=243.html', methods=['GET', 'POST'])
-@bp.route('/?page_id=258', methods=['GET', 'POST'])
-@bp.route('/page_id=258.html', methods=['GET', 'POST'])
+@bp.route('/?page_id=258')
+@bp.route('/page_id=258.html')
+@bp.route('/?page_id=243')
+@bp.route('/page_id=243.html')
+@bp.route('/?page_id=258')
+@bp.route('/page_id=258.html')
 def legacy_ecole():
     return redirect(url_for('ecole'))
 
-@bp.route('/?page_id=284', methods=['GET', 'POST'])
-@bp.route('/page_id=284.html', methods=['GET', 'POST'])
+@bp.route('/?page_id=284')
+@bp.route('/page_id=284.html')
 def legacy_blog_european_elections():
     return redirect(url_for('blog', 'L', 'élections_européennes'))
 
-@bp.route('/?page_id=293', methods=['GET', 'POST'])
-@bp.route('/page_id=293.html', methods=['GET', 'POST'])
+@bp.route('/?page_id=293')
+@bp.route('/page_id=293.html')
 def legacy_blog_casque_obligatoire():
     return redirect(url_for('blog', 'L', 'casque_obligatoire'))

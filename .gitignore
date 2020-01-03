@@ -104,3 +104,6 @@ venv.bak/
 
 # emacs
 *~
+
+# Vagrant
+.vagrant

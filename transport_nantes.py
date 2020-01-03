@@ -1,4 +1,5 @@
-from app import create_app, cli
+from app import create_app, db, cli
+from app.models import UserJourneyStep
 
 app = create_app()
 cli.register(app)
@@ -6,4 +7,5 @@ cli.register(app)
 
 @app.shell_context_processor
 def make_shell_context():
-    return {'Notification': Notification}
+    return {'db': db,
+            'UserJourneyStep': UserJourneyStep}

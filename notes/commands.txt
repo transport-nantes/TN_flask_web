@@ -1,0 +1,16 @@
+export FLASK_ENV=development
+export FLASK_APP=transport_nantes.py
+
+To run app in development:
+
+  flask run
+
+
+Some db commands:
+
+  flask db heads
+  flask db current
+  flask db stamp heads
+
+  flask db migrate
+  flask db upgrade
