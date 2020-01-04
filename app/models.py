@@ -13,7 +13,7 @@ class UserJourneyStep(db.Model):
     # principle index.  It is theoretically possible that it is not
     # unique, however.
     timestamp_microseconds = db.Column(db.BigInteger, default=now_in_microseconds)
-    ip_hash = db.column(db.String(40))
+    ip_hash = db.Column(db.String())
 
     # And then other fields of interest to us.
     referrer = db.Column(db.String())
