@@ -23,11 +23,44 @@ def make_new_tag():
         TAG_CHARS[randint(0,tag_char_end)] + TAG_CHARS[randint(0,tag_char_end)] + \
         TAG_CHARS[randint(0,tag_char_end)] + TAG_CHARS[randint(0,tag_char_end)]
 
+def make_new_seed():
+    """Generate a new seed.
+
+    We use seeds to stitch together user journeys.  In a perfect
+    world, the (ip_hash, tag) pair would be unique to a visitor, even
+    though IP address may change be over time.  But it is quite
+    reasonable to imagine multiple visitors arriving from behind the
+    same NAT address.  In such a case, we'd like to be able to knit
+    together the pages each individual visited.
+
+    Our strategy is to generate a new seed on each visit.  All
+    outgoing links, whether local (/D/...) or exit (/E/...) take a tag
+    and then a seed.  On each visit we record referrer and the URL
+    requested.  When stitching user journeys, we process (ip_hash,
+    tag) pair threads and then construct the forest of trees that have
+    the property that child nodes record as referrer the this_page_url
+    of the parent.
+
+    This has the perverse effect that we don't actually make use of
+    the seeds we receive.  We are forced to parse them in order to
+    deconstruct the actual URL root that we'd use, for example, in
+    calling url_for().
+
+    Finally, note that because seed-less URLs already exist in the
+    wild, we have to be prepared to accept URLs with tag but no seed.
+    Realistically, we need to do that forever.
+
+    """
+    tag_char_end = len(TAG_CHARS) - 1
+    return TAG_CHARS[randint(0,tag_char_end)] + \
+        TAG_CHARS[randint(0,tag_char_end)]
+
 URL_REGEX = re.compile('https?://([^/]+)/(.*)$')
 TAG_REGEX = re.compile('[DE]/([^/]+)/(.*$)')
 
 @bp.before_app_request
 def before_request():
+    g.seed = make_new_seed()
     if 'static' == request.endpoint:
         # This should only happen in dev.  Otherwise, nginx handles static routes directly.
         return
@@ -42,6 +75,8 @@ def before_request():
     journey_step.this_page_url = request.url
     [(this_host, this_path)]  = URL_REGEX.findall(request.url)
     if this_path:
+        # We don't need to pull out seed, because we only use it to
+        # match current URL against referrer in computing threads.
         [(this_page_tag, this_page_canonical)] = TAG_REGEX.findall(this_path)
         journey_step.tag = this_page_tag
         journey_step.this_page_canonical = this_page_canonical
@@ -58,6 +93,8 @@ def before_request():
 
 @bp.route('/')
 @bp.route('/accueil')
+@bp.route('/index')
+@bp.route('/index.html')
 def index_root():
     """Assign a session tag.
 
@@ -68,78 +105,75 @@ def index_root():
     """
     return redirect(url_for('main.index', tag=make_new_tag()))
 
-@bp.route('/municipales.html')
-@bp.route('/municipales/')
-def municipales_root():
-    return redirect(url_for('main.municipales', tag=make_new_tag()))
-
-@bp.route('/D/<tag>/accueil/')
+@bp.route('/D/<tag>/<seed>/accueil')
 @bp.route('/D/<tag>/accueil')
-def index(tag):
-    return render_template('index.html', title='', tag=tag)
+def index(tag, seed=None):
+    return render_template('index.html', title='', tag=tag, seed=g.seed)
 
-@bp.route('/D/<tag>/chronotrain/')
+@bp.route('/D/<tag>/<seed>/chronotrain')
 @bp.route('/D/<tag>/chronotrain')
-def chronotrain(tag):
-    return render_template('chronotrain.html', tag=tag)
+def chronotrain(tag, seed=None):
+    return render_template('chronotrain.html', tag=tag, seed=g.seed)
 
-@bp.route('/D/<tag>/velopolitain/')
+@bp.route('/D/<tag>/<seed>/velopolitain')
 @bp.route('/D/<tag>/velopolitain')
-def velopolitain(tag):
-    return render_template('velopolitain.html', tag=tag)
+def velopolitain(tag, seed=None):
+    return render_template('velopolitain.html', tag=tag, seed=g.seed)
 
-@bp.route('/D/<tag>/2019/')
+@bp.route('/D/<tag>/<seed>/2019')
 @bp.route('/D/<tag>/2019')
-def velopolitain_2019(tag):
-    return render_template('velopolitain-appeal.html', tag=tag)
+def velopolitain_2019(tag, seed=None):
+    return render_template('velopolitain-appeal.html', tag=tag, seed=g.seed)
 
-@bp.route('/D/<tag>/about/')
-def about_transport_nantes(tag):
-    return render_template('about.html', tag=tag), 404
+@bp.route('/D/<tag>/<seed>/about')
+@bp.route('/D/<tag>/about')
+def about_transport_nantes(tag, seed=None):
+    return render_template('about.html', tag=tag, seed=g.seed), 404
 
-@bp.route('/D/<tag>/chantenay/')
-def chantenay(tag):
-    return render_template('chantenay.html', tag=tag), 404
+@bp.route('/D/<tag>/<seed>/chantenay')
+@bp.route('/D/<tag>/chantenay')
+def chantenay(tag, seed=None):
+    return render_template('chantenay.html', tag=tag, seed=g.seed), 404
 
-@bp.route('/D/<tag>/municipales/')
+@bp.route('/D/<tag>/<seed>/municipales')
 @bp.route('/D/<tag>/municipales')
-def municipales(tag=None):
-    return render_template('municipales.html', tag=tag)
+def municipales(tag, seed=None):
+    return render_template('municipales.html', tag=tag, seed=g.seed)
 
-@bp.route('/D/<tag>/sponsor/')
+@bp.route('/D/<tag>/<seed>/sponsor')
 @bp.route('/D/<tag>/sponsor')
-def sponsor(tag=None):
-    return render_template('sponsor.html', tag=tag)
+def sponsor(tag, seed=None):
+    return render_template('sponsor.html', tag=tag, seed=g.seed)
 
-@bp.route('/D/<tag>/aligned/')
-@bp.route('/D/<tag>/aligned')
-@bp.route('/D/<tag>/asso/')
+@bp.route('/D/<tag>/<seed>/asso')
 @bp.route('/D/<tag>/asso')
-def aligned(tag=None):
-    return render_template('aligned.html', tag=tag)
+def aligned(tag, seed=None):
+    return render_template('aligned.html', tag=tag, seed=g.seed)
 
-@bp.route('/D/<tag>/benevole/')
-@bp.route('/D/<tag>/benevole')
-@bp.route('/D/<tag>/bénévole/')
+@bp.route('/D/<tag>/<seed>/bénévole')
 @bp.route('/D/<tag>/bénévole')
-def volunteer(tag=None):
-    return render_template('volunteer.html', tag=tag)
+def volunteer(tag, seed=None):
+    return render_template('volunteer.html', tag=tag, seed=g.seed)
 
+@bp.route('/D/<tag>/<seed>/ecole')
 @bp.route('/D/<tag>/ecole')
-def ecole(tag):
-    return render_template('ecole.html', tag=tag), 404
+def ecole(tag, seed=None):
+    return render_template('ecole.html', tag=tag, seed=g.seed), 404
 
+@bp.route('/D/<tag>/<seed>/presse')
 @bp.route('/D/<tag>/presse')
-def presse(tag):
-    return render_template('presse.html', tag=tag), 404
+def presse(tag, seed=None):
+    return render_template('presse.html', tag=tag, seed=g.seed), 404
 
+@bp.route('/D/<tag>/<seed>/mentions_legales')
 @bp.route('/D/<tag>/mentions_legales')
-def legal(tag):
-    return render_template('legale.html', tag=tag), 404
+def legal(tag, seed=None):
+    return render_template('legale.html', tag=tag, seed=g.seed), 404
 
+@bp.route('/D/<tag>/<seed>/blog/<blog_entry>')
 @bp.route('/D/<tag>/blog/<blog_entry>')
 def blog(tag, blog_entry):
-    return render_template('blog.html', tag=tag, body='Hello, world!'), 404
+    return render_template('blog.html', tag=tag, seed=g.seed, body='Hello, world!'), 404
 
 ## Legacy paths from old wordpress site.
 @bp.route('/?page_id=397')

@@ -20,17 +20,17 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-		<a class="navbar-brand" href="{{ url_for('main.index', tag=tag) }}"><img src={{ url_for('static', filename='TN-logo_colored.png') }} alt="Transport Nantes logo" width="50%""></a>
+		<a class="navbar-brand" href="{{ url_for('main.index', tag=tag, seed=seed) }}"><img src={{ url_for('static', filename='TN-logo_colored.png') }} alt="Transport Nantes logo" width="50%""></a>
             </div>  <!-- navbar-header -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
          <ul class="nav navbar-nav">
-         <li><a href="{{ url_for('main.index', tag=tag) }}">{{ 'Accueil' }}</a></li>
-         <li><a href="{{ url_for('main.velopolitain', tag=tag) }}">{{ 'Vélopolitain' }}</a></li>
-         <li><a href="{{ url_for('main.chronotrain', tag=tag) }}">{{ 'Chronotrain' }}</a></li>
-         <li><a href="{{ url_for('main.municipales', tag=tag) }}">{{ 'Municipales' }}</a></li>
-         <li><a href="{{ url_for('main.sponsor', tag=tag) }}">{{ 'Sponsor' }}</a></li>
-         <li><a href="{{ url_for('main.aligned', tag=tag) }}">{{ "Associations" }}</a></li>
-         <li><a href="{{ url_for('main.volunteer', tag=tag) }}">{{ "Bénévolat" }}</a></li>
+         <li><a href="{{ url_for('main.index', tag=tag, seed=seed) }}">{{ 'Accueil' }}</a></li>
+         <li><a href="{{ url_for('main.velopolitain', tag=tag, seed=seed) }}">{{ 'Vélopolitain' }}</a></li>
+         <li><a href="{{ url_for('main.chronotrain', tag=tag, seed=seed) }}">{{ 'Chronotrain' }}</a></li>
+         <li><a href="{{ url_for('main.municipales', tag=tag, seed=seed) }}">{{ 'Municipales' }}</a></li>
+         <li><a href="{{ url_for('main.sponsor', tag=tag, seed=seed) }}">{{ 'Sponsor' }}</a></li>
+         <li><a href="{{ url_for('main.aligned', tag=tag, seed=seed) }}">{{ "Associations" }}</a></li>
+         <li><a href="{{ url_for('main.volunteer', tag=tag, seed=seed) }}">{{ "Bénévolat" }}</a></li>
          </ul>
          </div>
         </div>

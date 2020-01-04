@@ -86,7 +86,7 @@
 
 	<ol>
 	    <li><strong>Si vous n'avez pas encore signé la
-		pétition,</strong> c'est <a href="{{ url_for('main.velopolitain', tag=tag) }}">le
+		pétition,</strong> c'est <a href="{{ url_for('main.velopolitain', tag=tag, seed=seed) }}">le
 		moment</a>.  Nous avons besoin de
 		votre voix !</li>
 	    <li><strong>Lors des fêtes, demandez à vos proches</strong>, à vos familles
@@ -123,7 +123,7 @@
 	<p> Combien cela vaut-il pour vous ?</p>
 
 	<p align="center"><a href="https://www.helloasso.com/associations/transport-nantes/adhesions/fin-d-annee-transport-nantes-2019" class="btn btn-primary btn-lg" role="button" target="_blank">J'adhère</a> <a
-	href="{{ url_for('main.velopolitain', tag=tag) }}"
+	href="{{ url_for('main.velopolitain', tag=tag, seed=seed) }}"
 	class="btn btn-primary btn-lg" role="button" target="_blank">Je signe la petition</a>
 	</p>
 
@@ -153,7 +153,7 @@
 <div class="row">
     <div class="col-md-2 col-sm-3">
 	<img src="{{ url_for('static', filename='jeff-abrahamson-1010.jpg',
-    tag=tag) }}" style="width:100px;">
+    tag=tag, seed=seed) }}" style="width:100px;">
     </div>
     <div class="col-md-10 col-sm-9">
 	<p><a href="mailto:jeff@transport-nantes.com">Jeff Abrahamson</a><br>

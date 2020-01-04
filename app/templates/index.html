@@ -14,9 +14,9 @@
     <div class="row">
 	<div class="col-lg-12">
 	    <p><strong>Annonce aux cyclistes</strong> : les candidat-e-s parlent du vélo !</p>
-	    <a href="{{ url_for('main.velopolitain', tag=tag) }}">
+	    <a href="{{ url_for('main.velopolitain', tag=tag, seed=seed) }}">
 	    <img src="{{ url_for('static', filename='temp/conv.jpg',
-		      tag=tag) }}" style="width:100%">
+		      tag=tag, seed=seed) }}" style="width:100%">
 	    </a>
 
 	    <p class="text-important">  <small>Cyclistes !
@@ -37,7 +37,7 @@
 		Ensemble nous sommes plus forts !
 	    </p>
 	<p align="center"><a href="https://www.helloasso.com/associations/transport-nantes/adhesions/adhesion-transport-nantes-2019/" class="btn btn-primary btn-lg" role="button" target="_blank">J'adhère</a> <a
-	href="{{ url_for('main.velopolitain', tag=tag) }}"
+	href="{{ url_for('main.velopolitain', tag=tag, seed=seed) }}"
 	class="btn btn-primary btn-lg" role="button">Je signe la petition</a>
 	</p>
 	</div>
