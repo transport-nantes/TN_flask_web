@@ -6,6 +6,11 @@ from app.main import bp
 from app.models import UserJourneyStep
 from random import randint
 import re
+# md5 takes about 2-3 ns to run on my laptop, whilst sha1 takes 8-10
+# ns to run.  In both cases, this is negligible, but it seems prudent
+# to choose the faster, since a 128 bit md5 hash of a 32 bit ip
+# address is good enough for our non-cryptographic purposes.
+from hashlib import md5
 
 TAG_CHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 def make_new_tag():
@@ -66,7 +71,7 @@ def before_request():
         return
     #print(UserJourneyStep.query.all())
     journey_step = UserJourneyStep()
-    journey_step.ip_hash = '';
+    journey_step.ip_hash = md5(request.remote_addr.encode()).hexdigest();
     journey_step.referrer = request.referrer
     if request.referrer:
         [(referrer_host, referrer_path)]  = URL_REGEX.findall(request.referrer)
