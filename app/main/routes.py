@@ -61,7 +61,7 @@ def make_new_seed():
         TAG_CHARS[randint(0,tag_char_end)]
 
 URL_REGEX = re.compile('https?://([^/]+)/(.*)$')
-TAG_REGEX = re.compile('[DE]/([^/]+)/(.*$)')
+TAG_REGEX = re.compile('[DEF]/([^/]+)/(.*$)')
 
 @bp.before_app_request
 def before_request():
@@ -96,6 +96,23 @@ def before_request():
     db.session.add(journey_step)
     db.session.commit()
 
+"""
+Route policy:
+
+The only route that may have no prefix is the root itself.  Anything
+else is assumed to be a click or scan, not a user typing something by
+hand.
+
+The /D/ routes are followed by a tag.  They are deprecated, but we
+must support them, basically forever, so that links in the wild will
+continue to resolve.
+
+The /E/ routes are followed by a tag and seed.  They represent site exit only.
+
+The /F/ routes are followed by a tag and seed.  They replace /D/ routes.
+
+"""
+
 @bp.route('/')
 @bp.route('/accueil')
 @bp.route('/index')
@@ -108,74 +125,74 @@ def index_root():
     modifiers.
 
     """
-    return redirect(url_for('main.index', tag=make_new_tag()))
+    return redirect(url_for('main.index', tag=make_new_tag(), seed=g.seed))
 
-@bp.route('/D/<tag>/<seed>/accueil')
+@bp.route('/F/<tag>/<seed>/accueil')
 @bp.route('/D/<tag>/accueil')
 def index(tag, seed=None):
     return render_template('index.html', title='', tag=tag, seed=g.seed)
 
-@bp.route('/D/<tag>/<seed>/chronotrain')
+@bp.route('/F/<tag>/<seed>/chronotrain')
 @bp.route('/D/<tag>/chronotrain')
 def chronotrain(tag, seed=None):
     return render_template('chronotrain.html', tag=tag, seed=g.seed)
 
-@bp.route('/D/<tag>/<seed>/velopolitain')
+@bp.route('/F/<tag>/<seed>/velopolitain')
 @bp.route('/D/<tag>/velopolitain')
 def velopolitain(tag, seed=None):
     return render_template('velopolitain.html', tag=tag, seed=g.seed)
 
-@bp.route('/D/<tag>/<seed>/2019')
+@bp.route('/F/<tag>/<seed>/2019')
 @bp.route('/D/<tag>/2019')
 def velopolitain_2019(tag, seed=None):
     return render_template('velopolitain-appeal.html', tag=tag, seed=g.seed)
 
-@bp.route('/D/<tag>/<seed>/about')
+@bp.route('/F/<tag>/<seed>/about')
 @bp.route('/D/<tag>/about')
 def about_transport_nantes(tag, seed=None):
     return render_template('about.html', tag=tag, seed=g.seed), 404
 
-@bp.route('/D/<tag>/<seed>/chantenay')
+@bp.route('/F/<tag>/<seed>/chantenay')
 @bp.route('/D/<tag>/chantenay')
 def chantenay(tag, seed=None):
     return render_template('chantenay.html', tag=tag, seed=g.seed), 404
 
-@bp.route('/D/<tag>/<seed>/municipales')
+@bp.route('/F/<tag>/<seed>/municipales')
 @bp.route('/D/<tag>/municipales')
 def municipales(tag, seed=None):
     return render_template('municipales.html', tag=tag, seed=g.seed)
 
-@bp.route('/D/<tag>/<seed>/sponsor')
+@bp.route('/F/<tag>/<seed>/sponsor')
 @bp.route('/D/<tag>/sponsor')
 def sponsor(tag, seed=None):
     return render_template('sponsor.html', tag=tag, seed=g.seed)
 
-@bp.route('/D/<tag>/<seed>/asso')
+@bp.route('/F/<tag>/<seed>/asso')
 @bp.route('/D/<tag>/asso')
 def aligned(tag, seed=None):
     return render_template('aligned.html', tag=tag, seed=g.seed)
 
-@bp.route('/D/<tag>/<seed>/bénévole')
+@bp.route('/F/<tag>/<seed>/bénévole')
 @bp.route('/D/<tag>/bénévole')
 def volunteer(tag, seed=None):
     return render_template('volunteer.html', tag=tag, seed=g.seed)
 
-@bp.route('/D/<tag>/<seed>/ecole')
+@bp.route('/F/<tag>/<seed>/ecole')
 @bp.route('/D/<tag>/ecole')
 def ecole(tag, seed=None):
     return render_template('ecole.html', tag=tag, seed=g.seed), 404
 
-@bp.route('/D/<tag>/<seed>/presse')
+@bp.route('/F/<tag>/<seed>/presse')
 @bp.route('/D/<tag>/presse')
 def presse(tag, seed=None):
     return render_template('presse.html', tag=tag, seed=g.seed), 404
 
-@bp.route('/D/<tag>/<seed>/mentions_legales')
+@bp.route('/F/<tag>/<seed>/mentions_legales')
 @bp.route('/D/<tag>/mentions_legales')
 def legal(tag, seed=None):
     return render_template('legale.html', tag=tag, seed=g.seed), 404
 
-@bp.route('/D/<tag>/<seed>/blog/<blog_entry>')
+@bp.route('/F/<tag>/<seed>/blog/<blog_entry>')
 @bp.route('/D/<tag>/blog/<blog_entry>')
 def blog(tag, blog_entry):
     return render_template('blog.html', tag=tag, seed=g.seed, body='Hello, world!'), 404
