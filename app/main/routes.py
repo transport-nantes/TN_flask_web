@@ -161,8 +161,13 @@ def chantenay(tag, seed=None):
 
 @bp.route('/D/<tag>/municipales', defaults={'seed': None, 'commune': '-', 'parti': '-', 'question': '-'})
 @bp.route('/F/<tag>/<seed>/municipales/<commune>/<parti>/<question>')
-def municipales(tag, seed, commune='-', parti='-', question='-'):
-    return render_template('municipales.html', tag=tag, seed=g.seed, commune=commune, parti=parti, question=question)
+def municipales_responses(tag, seed, commune='-', parti='-', question='-'):
+    return render_template('municipales-responses.html', tag=tag, seed=g.seed,
+                           commune=commune, parti=parti, question=question)
+
+@bp.route('/F/<tag>/<seed>/municipales-candidat')
+def municipales_candidats(tag, seed):
+    return render_template('municipales-survey.html', tag=tag, seed=g.seed)
 
 @bp.route('/F/<tag>/<seed>/sponsor')
 @bp.route('/D/<tag>/sponsor')
