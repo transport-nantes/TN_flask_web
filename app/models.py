@@ -15,6 +15,13 @@ class UserJourneyStep(db.Model):
     timestamp_microseconds = db.Column(db.BigInteger, default=now_in_microseconds)
     ip_hash = db.Column(db.String())
 
+    # Indicate if this visit represents a site entry.
+    # Note that we can't really compute an is_exit, because many clicks
+    # that result in the user leaving the site do so only temporarily in
+    # another window.  Also, exit isn't particularly interesting, whereas
+    # entries are particularly pertinent.
+    is_entry = db.Column(db.Boolean())
+
     # And then other fields of interest to us.
     referrer = db.Column(db.String())
     # This is the canonical host component of the REFERER.

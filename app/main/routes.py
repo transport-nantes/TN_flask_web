@@ -88,6 +88,8 @@ def before_request():
     else:
         journey_step.tag = ''
         journey_step.this_page_canonical = '/'
+    journey_step.is_entry = (this_host != journey_step.referrer_host)
+
     journey_step.ua_string = request.headers.get('User-Agent')
     journey_step.ua_browser = request.user_agent.browser
     journey_step.ua_language = request.user_agent.language
