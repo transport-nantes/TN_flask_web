@@ -159,10 +159,10 @@ def about_transport_nantes(tag, seed=None):
 def chantenay(tag, seed=None):
     return render_template('chantenay.html', tag=tag, seed=g.seed), 404
 
-@bp.route('/F/<tag>/<seed>/municipales')
-@bp.route('/D/<tag>/municipales')
-def municipales(tag, seed=None):
-    return render_template('municipales.html', tag=tag, seed=g.seed)
+@bp.route('/D/<tag>/municipales', defaults={'seed': None, 'commune': '-', 'parti': '-', 'question': '-'})
+@bp.route('/F/<tag>/<seed>/municipales/<commune>/<parti>/<question>')
+def municipales(tag, seed, commune='-', parti='-', question='-'):
+    return render_template('municipales.html', tag=tag, seed=g.seed, commune=commune, parti=parti, question=question)
 
 @bp.route('/F/<tag>/<seed>/sponsor')
 @bp.route('/D/<tag>/sponsor')
