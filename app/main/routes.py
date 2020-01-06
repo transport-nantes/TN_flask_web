@@ -4,6 +4,7 @@ from flask import render_template, flash, redirect, url_for, request, g, \
 from app import db
 from app.main import bp
 from app.models import UserJourneyStep
+from app.models import Survey, SurveyQuestion, SurveyResponder, SurveyResponse
 from random import randint
 import re
 # md5 takes about 2-3 ns to run on my laptop, whilst sha1 takes 8-10
@@ -159,11 +160,40 @@ def about_transport_nantes(tag, seed=None):
 def chantenay(tag, seed=None):
     return render_template('chantenay.html', tag=tag, seed=g.seed), 404
 
-@bp.route('/D/<tag>/municipales', defaults={'seed': None, 'commune': '-', 'parti': '-', 'question': '-'})
-@bp.route('/F/<tag>/<seed>/municipales/<commune>/<parti>/<question>')
-def municipales_responses(tag, seed, commune='-', parti='-', question='-'):
-    return render_template('municipales-responses.html', tag=tag, seed=g.seed,
-                           commune=commune, parti=parti, question=question)
+@bp.route('/D/<tag>/municipales', defaults={'seed': None})
+@bp.route('/F/<tag>/<seed>/municipales')
+def municipales_responses(tag, seed):
+    commune = request.args.get('commune')
+    parti = request.args.get('parti')
+    liste = request.args.get('liste')
+    question = request.args.get('question')
+    if commune is None:
+        # Provide a choice of commune.
+        communes = db.session.query(SurveyResponder.commune.distinct()).all()
+        communes = [x[0] for x in communes]
+        if len(communes) > 1:
+            return render_template('municipales-choose-commune.html', tag=tag, seed=g.seed, communes=communes)
+        if len(communes) == 0:
+            return 404
+        commune = communes[0]
+    if parti is None and liste is None:
+        # Got commune but not party/liste, so provide a list of parties/lists.
+        # It's unclear to me if I should be choosing parties or lists.
+        communes = db.session.query(SurveyResponder.commune.distinct()).all()
+        communes = [x[0] for x in communes]
+        lists = db.session.query(
+            SurveyResponder.liste.distinct(), SurveyResponder.tete_de_liste).filter_by(
+                commune=commune).all()
+        return render_template('municipales-choose-list.html', tag=tag, seed=g.seed,
+                               communes=communes, commune=commune, lists=lists)
+    elif question is None:
+        # We know commune and list/party, but not the question of
+        # interest.  Display all questions.
+        pass
+    else:
+        # We know the question, so just display that one response.
+        pass
+    return render_template('municipales-responses.html', tag=tag, seed=g.seed)
 
 @bp.route('/F/<tag>/<seed>/municipales-candidat')
 def municipales_candidats(tag, seed):

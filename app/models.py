@@ -122,6 +122,7 @@ class SurveyResponder(db.Model):
     commune = db.Column(db.String)
     liste = db.Column(db.String)
     parti_principal = db.Column(db.String)
+    parti_rattaches = db.Column(db.String)
     tete_de_liste = db.Column(db.String)
     sortant = db.Column(db.Boolean)
 

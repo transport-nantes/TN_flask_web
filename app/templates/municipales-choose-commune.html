@@ -31,7 +31,11 @@
 </div>
 <div class="row">
     <div class="col-lg-12">
-	<p>Hello.</p>
+	<ul>
+	    {% for commune in communes %}
+	    <li><a href="{{ url_for('main.municipales_responses', tag=tag, seed=seed, commune=commune) }}">{{ commune }}</a></li>
+	    {% endfor %}
+	</ul>
     </div>
 </div>
 <div class="row">
