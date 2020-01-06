@@ -43,11 +43,29 @@
 <div class="row">
     <div class="col-lg-12">
 	<h2 class="bg-info">Liste : {{ liste }}</h2>
-	<ul>
-	    {% for question in questions %}
-	    <li><a href="{{ url_for('main.municipales_responses', tag=tag, seed=seed, commune=commune, liste=liste, question=question[0]) }}">{{ question[0] }} : <b>{{ question[1] }}</b></a></li>
-	    {% endfor %}
-	</ul>
+    </div>
+</div>
+
+<div class="container">
+    {% for question in questions %}
+    <button type="button" class="btn-xs">
+	<a href="{{ url_for('main.municipales_responses', tag=tag, seed=seed, commune=commune, liste=lists[0], question=question[0]) }}">{{ question[0] }} : <b>{{ question[1] }}</b></a></button>
+    {% endfor %}
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+	<h2 class="bg-info">Question : {{ question_contents[0] }}</h2>
+
+	<h3>La question</h3>
+	<div class="text-muted">{{ question_contents[1]|safe }}</div>
+
+	<h3>La réponse de la liste {{ liste }}</h3>
+	{% if survey_response is not none %}
+	<div class="text-primary">{{ survey_response }}</div>
+	{% else %}
+	<p class="text-primary">La liste {{ liste }} n'a pas encore répondu à cette question.</p>
+	{% endif %}
     </div>
 </div>
 

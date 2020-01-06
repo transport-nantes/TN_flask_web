@@ -196,17 +196,27 @@ def municipales_responses(tag, seed):
         liste = lists[0][0]
 
     # We have a unique commune and a unique list.
+    questions = db.session.query(SurveyQuestion.question_number, SurveyQuestion.question_title).order_by(
+        SurveyQuestion.sort_index.asc()).all()
     if question is None:
         # We know commune and list/party, but not the question of
         # interest.  Display all questions.
-        questions = db.session.query(SurveyQuestion.question_number, SurveyQuestion.question_title).order_by(
-            SurveyQuestion.sort_index.asc()).all()
         return render_template('municipales-choose-question.html', tag=tag, seed=g.seed,
                                communes=communes, commune=commune, lists=lists, liste=liste,
                                questions=questions)
 
+    question_contents = db.session.query(SurveyQuestion.question_title,
+                                         SurveyQuestion.question_text).filter_by(
+                                             question_number=question).one()
+    survey_response = db.session.query(SurveyResponse.survey_question_response).filter_by(
+        survey_question_id=question).one_or_none()
     # We know the question, so just display that one response.
-    return render_template('municipales-responses.html', tag=tag, seed=g.seed)
+    return render_template('municipales-show-question.html', tag=tag, seed=g.seed,
+                           communes=communes, commune=commune,
+                           lists=lists,liste=liste,
+                           questions=questions, question=question,
+                           question_contents=question_contents,
+                           survey_response=survey_response)
 
 @bp.route('/F/<tag>/<seed>/municipales-candidat')
 def municipales_candidats(tag, seed):
