@@ -32,7 +32,7 @@
 	<h2 class="bg-info">{{ commune }}</h2>
 	<ul>
 	    {% for list in lists %}
-	    <li><a href="{{ url_for('main.municipales_responses', tag=tag, seed=seed, commune=commune, list=list[0]) }}">{{ list[0] }} (tête de liste : {{ list[1] }})</a></li>
+	    <li><a href="{{ url_for('main.municipales_responses', tag=tag, seed=seed, commune=commune, liste=list[0]) }}">{{ list[0] }} (tête de liste : {{ list[1] }})</a></li>
 	    {% endfor %}
 	</ul>
     </div>

@@ -163,36 +163,49 @@ def chantenay(tag, seed=None):
 @bp.route('/D/<tag>/municipales', defaults={'seed': None})
 @bp.route('/F/<tag>/<seed>/municipales')
 def municipales_responses(tag, seed):
+    """Display the municipal survey results.
+
+    Or guide the user to finding the results s/he wants.
+
+    This function is slightly borked, because it's not filtering on
+    survey id.  It should.  But for the moment there's only one survey
+    id, so put that off in the interests of getting this out.
+
+    """
     commune = request.args.get('commune')
-    parti = request.args.get('parti')
     liste = request.args.get('liste')
     question = request.args.get('question')
+
+    communes = db.session.query(SurveyResponder.commune.distinct()).all()
+    communes = [x[0] for x in communes]
     if commune is None:
         # Provide a choice of commune.
-        communes = db.session.query(SurveyResponder.commune.distinct()).all()
-        communes = [x[0] for x in communes]
-        if len(communes) > 1:
+        if len(communes) != 1:
             return render_template('municipales-choose-commune.html', tag=tag, seed=g.seed, communes=communes)
-        if len(communes) == 0:
-            return 404
         commune = communes[0]
-    if parti is None and liste is None:
-        # Got commune but not party/liste, so provide a list of parties/lists.
-        # It's unclear to me if I should be choosing parties or lists.
-        communes = db.session.query(SurveyResponder.commune.distinct()).all()
-        communes = [x[0] for x in communes]
-        lists = db.session.query(
-            SurveyResponder.liste.distinct(), SurveyResponder.tete_de_liste).filter_by(
-                commune=commune).all()
-        return render_template('municipales-choose-list.html', tag=tag, seed=g.seed,
-                               communes=communes, commune=commune, lists=lists)
-    elif question is None:
+
+    # We have a unique commune.
+    lists = db.session.query(
+        SurveyResponder.liste.distinct(), SurveyResponder.tete_de_liste).filter_by(
+            commune=commune).all()
+    if liste is None:
+        # Got commune but not party/liste, so provide a list of lists.
+        if len(lists) != 1:
+            return render_template('municipales-choose-list.html', tag=tag, seed=g.seed,
+                                   communes=communes, commune=commune, lists=lists)
+        liste = lists[0][0]
+
+    # We have a unique commune and a unique list.
+    if question is None:
         # We know commune and list/party, but not the question of
         # interest.  Display all questions.
-        pass
-    else:
-        # We know the question, so just display that one response.
-        pass
+        questions = db.session.query(SurveyQuestion.question_number, SurveyQuestion.question_title).order_by(
+            SurveyQuestion.sort_index.asc()).all()
+        return render_template('municipales-choose-question.html', tag=tag, seed=g.seed,
+                               communes=communes, commune=commune, lists=lists, liste=liste,
+                               questions=questions)
+
+    # We know the question, so just display that one response.
     return render_template('municipales-responses.html', tag=tag, seed=g.seed)
 
 @bp.route('/F/<tag>/<seed>/municipales-candidat')
