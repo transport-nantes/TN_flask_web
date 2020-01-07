@@ -10,3 +10,4 @@ class Config(object):
     ADMINS = ['your-email@example.com']
     LANGUAGES = ['fr', 'en']
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    CSRF_ENABLED = True

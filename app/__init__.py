@@ -15,9 +15,18 @@ def create_app(config_class=Config):
     app = Flask(__name__)
     app.config.from_object(config_class)
     try:
-        app.config.from_pyfile("../config_local.py")
+        # On linodes we expect to find our local config in /var/transport-nantes/.
+        config_filename = "/var/p27/config_tn_schema.py"
+        print("Trying {fn}".format(fn=config_filename))
+        app.config.from_pyfile(config_filename)
     except FileNotFoundError:
-        print('No local config found.')
+        # On dev hosts, we expect to find local config locally.
+        try:
+            config_filename = "../config_local.py"
+            print("Trying {fn}".format(fn=config_filename))
+            app.config.from_pyfile(config_filename)
+        except FileNotFoundError:
+            print('No local config found.')
     except:
         print('Unexpected error on app.config.from_pyfile()')
 
