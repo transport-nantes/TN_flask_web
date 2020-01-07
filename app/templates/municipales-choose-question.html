@@ -23,9 +23,11 @@
     </div>
 </div>
 <div class="container">
+    <p>Choisissez une autre commune :
     {% for commune in communes %}
     <button type="button" class="btn-xs"><a href="{{ url_for('main.municipales_responses', tag=tag, seed=seed, commune=commune) }}">{{ commune }}</a></button>
     {% endfor %}
+    </p>
 </div>
 
 <div class="row">
@@ -35,14 +37,17 @@
 </div>
 
 <div class="container">
+    <p>Choisissez une autre liste :
     {% for list in lists %}
     <button type="button" class="btn-xs"><a href="{{ url_for('main.municipales_responses', tag=tag, seed=seed, commune=commune, liste=list[0]) }}">{{ list[0] }} (tête de liste : {{ list[1] }}</a></button>
     {% endfor %}
+    </p>
 </div>
 
 <div class="row">
     <div class="col-lg-12">
 	<h2 class="bg-info">Liste : {{ liste }}</h2>
+	<p><strong>Choisissez une question :</strong></p>
 	<ul>
 	    {% for question in questions %}
 	    <li><a href="{{ url_for('main.municipales_responses', tag=tag, seed=seed, commune=commune, liste=liste, question=question[0]) }}">{{ question[0] }} : <b>{{ question[1] }}</b></a></li>
