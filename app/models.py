@@ -12,7 +12,7 @@ class UserJourneyStep(db.Model):
     Represent one step in a users full journey through the site.
 
     """
-    __table_args__ = {"schema": "tn_schema"}
+    # __table_args__ = {"schema": "tn_schema"}
 
     # For the database, we want a guaranteed unique PK.
     id = db.Column(db.Integer, primary_key=True)
@@ -71,7 +71,7 @@ class Survey(db.Model):
     anyone's responses.
 
     """
-    __table_args__ = {"schema": "tn_schema"}
+    # __table_args__ = {"schema": "tn_schema"}
 
     id = db.Column(db.Integer, primary_key=True)
     # A human-presentable name of the survey
@@ -86,7 +86,7 @@ class SurveyQuestion(db.Model):
     This does not represent anyone's responses.
 
     """
-    __table_args__ = {"schema": "tn_schema"}
+    # __table_args__ = {"schema": "tn_schema"}
 
     id = db.Column(db.Integer, primary_key=True)
     created_microseconds = db.Column(db.BigInteger, default=now_in_microseconds)
@@ -112,7 +112,7 @@ class SurveyResponder(db.Model):
     seemed easier to manage.
 
     """
-    __table_args__ = {"schema": "tn_schema"}
+    # __table_args__ = {"schema": "tn_schema"}
 
     id = db.Column(db.Integer, primary_key=True)
     created_microseconds = db.Column(db.BigInteger, default=now_in_microseconds)
@@ -150,7 +150,7 @@ class SurveyResponder(db.Model):
 class SurveyResponse(db.Model):
     """Represent candidate/party responses to survey questions.
     """
-    __table_args__ = {"schema": "tn_schema"}
+    # __table_args__ = {"schema": "tn_schema"}
 
     id = db.Column(db.Integer, primary_key=True)
     created_microseconds = db.Column(db.BigInteger, default=now_in_microseconds)
