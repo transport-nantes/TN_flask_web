@@ -147,6 +147,8 @@ class SurveyResponder(db.Model):
     twitter_candidat = db.Column(db.String)
     facebook = db.Column(db.String)
 
+    responses = db.relationship('SurveyResponse', backref='responder', lazy=True)
+
 class SurveyResponse(db.Model):
     """Represent candidate/party responses to survey questions.
     """

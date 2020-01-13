@@ -13,47 +13,69 @@ def do_municipales_responses(tag, seed):
 
     """
     commune = request.args.get('commune')
+    communes = db.session.query(SurveyResponder.commune.distinct()).order_by(
+        SurveyResponder.commune.asc()).all()
     liste = request.args.get('liste')
+    listes = []
     question = request.args.get('question')
+    questions = []
+    question_contents = None
+    survey_response = None
 
-    communes = db.session.query(SurveyResponder.commune.distinct()).all()
-    communes = [x[0] for x in communes]
     if commune is None:
-        # Provide a choice of commune.
+        # User has not yet selected a commune.  Unless there's not
+        # choice to make, start by offering that choice.
         if len(communes) != 1:
-            return render_template('municipales-choose-commune.html', tag=tag, seed=g.seed, communes=communes)
+            return render_template('municipales-question.html', tag=tag, seed=g.seed,
+                                   communes=communes, this_commune=commune,
+                                   listes=listes, this_liste=liste,
+                                   questions=questions, this_question=question,
+                                   question_contents=question_contents,
+                                   survey_response=survey_response)
         commune = communes[0]
 
     # We have a unique commune.
-    lists = db.session.query(
+    listes = db.session.query(
         SurveyResponder.liste.distinct(), SurveyResponder.tete_de_liste).filter_by(
-            commune=commune).all()
+            commune=commune).order_by(
+                SurveyResponder.liste.asc()).all()
     if liste is None:
-        # Got commune but not party/liste, so provide a list of lists.
-        if len(lists) != 1:
-            return render_template('municipales-choose-list.html', tag=tag, seed=g.seed,
-                                   communes=communes, commune=commune, lists=lists)
-        liste = lists[0][0]
+        # Got commune but not liste, so provide a list of lists.
+        # Unless there's only one liste, in which case might as well
+        # just choose it and be on our way.
+        if len(listes) != 1:
+            return render_template('municipales-question.html', tag=tag, seed=g.seed,
+                                   communes=communes, this_commune=commune,
+                                   listes=listes, this_liste=liste,
+                                   questions=questions, this_question=question,
+                                   question_contents=question_contents,
+                                   survey_response=survey_response)
+        liste = listes[0][0]
 
     # We have a unique commune and a unique list.
-    questions = db.session.query(SurveyQuestion.question_number, SurveyQuestion.question_title).order_by(
-        SurveyQuestion.sort_index.asc()).all()
-    if question is None:
+    questions = db.session.query(SurveyQuestion.question_number, \
+                                 SurveyQuestion.question_title).order_by(
+                                    SurveyQuestion.sort_index.asc()).all()
+    if question is None or '' == question:
         # We know commune and list/party, but not the question of
-        # interest.  Display all questions.
-        return render_template('municipales-choose-question.html', tag=tag, seed=g.seed,
-                               communes=communes, commune=commune, lists=lists, liste=liste,
-                               questions=questions)
+        # interest.  Request user to pick a question.
+        return render_template('municipales-question.html', tag=tag, seed=g.seed,
+                                   communes=communes, this_commune=commune,
+                                   listes=listes, this_liste=liste,
+                                   questions=questions, this_question=question,
+                                   question_contents=question_contents,
+                                   survey_response=survey_response)
 
     question_contents = db.session.query(SurveyQuestion.question_title,
                                          SurveyQuestion.question_text).filter_by(
                                              question_number=question).one()
     survey_response = db.session.query(SurveyResponse.survey_question_response).filter_by(
-        survey_question_id=question).one_or_none()
+        survey_question_id=question,
+        ).one_or_none()
     # We know the question, so just display that one response.
-    return render_template('municipales-show-question.html', tag=tag, seed=g.seed,
-                           communes=communes, commune=commune,
-                           lists=lists,liste=liste,
-                           questions=questions, question=question,
+    return render_template('municipales-question.html', tag=tag, seed=g.seed,
+                           communes=communes, this_commune=commune,
+                           listes=listes, this_liste=liste,
+                           questions=questions, this_question=question,
                            question_contents=question_contents,
                            survey_response=survey_response)
