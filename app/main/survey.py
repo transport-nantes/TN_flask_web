@@ -80,7 +80,8 @@ def do_municipales_responses(tag, seed):
     if survey_response and survey_response[0]:
         survey_response = survey_response[0].split('\n')
     else:
-        survey_response = []
+        survey_response = ["{TdL} n'a pas encore répondu à cette question.".format(
+            TdL=responder[2])]
     # We know the question, so just display that one response.
     return render_template('municipales-question.html', tag=tag, seed=g.seed,
                            communes=communes, this_commune=commune,
