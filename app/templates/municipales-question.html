@@ -68,18 +68,22 @@
 
 {% if question_contents is not none and question_contents|length %}
 <div class="row">
-    <div class="col-lg-12">
-	<h2 class="bg-info">Question : {{ question_contents[0] }}</h2>
+    <div class="col-lg-12 text-important">
+	<h2 class="bg-info">Question : {{ question_contents[1] }}</h2>
 
-	<h3>La réponse de la liste {{ liste }}</h3>
+	<h3>La réponse de {{ responder[2]|default('') }} ({{ responder[1] }}) :</h3>
 	{% if survey_response is not none %}
-	<div class="text-primary">{{ survey_response }}</div>
+	<div class="text-primary">
+	    {% for paragraph in survey_response %}
+	    <p>{{ paragraph }}</p>
+	    {% endfor %}
+	</div>
 	{% else %}
 	<p class="text-primary">La liste {{ liste }} n'a pas encore répondu à cette question.</p>
 	{% endif %}
 
 	<h3>La question</h3>
-	<div class="text-muted">{{ question_contents[1]|safe }}</div>
+	<div class="text-muted">{{ question_contents[2]|safe }}</div>
     </div>
 </div>
 {% endif %}

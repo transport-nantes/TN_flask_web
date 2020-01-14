@@ -66,16 +66,23 @@ def do_municipales_responses(tag, seed):
                                    question_contents=question_contents,
                                    survey_response=survey_response)
 
-    question_contents = db.session.query(SurveyQuestion.question_title,
+    responder = db.session.query(SurveyResponder.id, SurveyResponder.liste,
+                                 SurveyResponder.tete_de_liste).filter_by(
+                                     commune=commune, liste=liste).one_or_none()
+    question_contents = db.session.query(SurveyQuestion.id,
+                                         SurveyQuestion.question_title,
                                          SurveyQuestion.question_text).filter_by(
                                              question_number=question).one()
     survey_response = db.session.query(SurveyResponse.survey_question_response).filter_by(
-        survey_question_id=question,
-        ).one_or_none()
+        survey_question_id=question_contents[0],
+        survey_id=1,
+        survey_responder_id=responder[0]).one_or_none()
+    survey_response = survey_response[0].split('\n')
     # We know the question, so just display that one response.
     return render_template('municipales-question.html', tag=tag, seed=g.seed,
                            communes=communes, this_commune=commune,
                            listes=listes, this_liste=liste,
                            questions=questions, this_question=question,
                            question_contents=question_contents,
-                           survey_response=survey_response)
+                           survey_response=survey_response,
+                           responder=responder)
