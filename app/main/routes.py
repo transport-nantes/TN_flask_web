@@ -76,8 +76,17 @@ def before_request():
     journey_step.ip_hash = md5(request.remote_addr.encode()).hexdigest();
     journey_step.referrer = request.referrer
     if request.referrer:
-        [(referrer_host, referrer_path)]  = URL_REGEX.findall(request.referrer)
-        journey_step.referrer_host = referrer_host
+        response = URL_REGEX.findall(request.referrer)
+        if response:
+            [(referrer_host, referrer_path)] = response
+            journey_step.referrer_host = referrer_host
+        else:
+            # Some clients, like chrome mobile on android, write some
+            # very strange things in the REFERER field.  (Chrome
+            # android writes android-app:// and then the name of where
+            # it got its content, near as I can tell.)  So just go
+            # with whatever we get for now.
+            journey_step.referrer_host = request.referrer
 
     journey_step.this_page_url = request.url
     [(this_host, this_path)]  = URL_REGEX.findall(request.url)
