@@ -77,7 +77,10 @@ def do_municipales_responses(tag, seed):
         survey_question_id=question_contents[0],
         survey_id=1,
         survey_responder_id=responder[0]).one_or_none()
-    survey_response = survey_response[0].split('\n')
+    if survey_response and survey_response[0]:
+        survey_response = survey_response[0].split('\n')
+    else:
+        survey_response = []
     # We know the question, so just display that one response.
     return render_template('municipales-question.html', tag=tag, seed=g.seed,
                            communes=communes, this_commune=commune,
