@@ -1,5 +1,6 @@
-from app import db
+from app import db, login
 import time
+from flask_login import UserMixin
 
 def now_in_microseconds():
     """Return the current time in microseconds since the epoch.
@@ -63,6 +64,63 @@ class UserJourneyStep(db.Model):
         return '<[{tag}]/[{ip}] {microsec}/{city}>'.format(
             tag=self.tag, ip=self.ip_hash,
             microsec=self.timestamp_microseconds, city=self.city)
+
+class User(UserMixin, db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(120), index=True, unique=True)
+    # Set to true once user has responded to a validation token.
+    # Unvalidated user entries may be deleted after enough time has
+    # passed without validation.  (We only set last_seen the first
+    # time the email is noted and thereafter only on validation.)
+    validated = db.Column(db.Boolean)
+    last_seen = db.Column(db.BigInteger, default=now_in_microseconds)
+    # We reset remember_me each time the user has to login.  This
+    # value probably won't matter except to transmit the form value to
+    # the login_user call.
+    remember_me = db.Column(db.Boolean)
+    # When user identifies her/himself, we assign a token and an
+    # expiry time, then send the token to the user's email.  If the
+    # user then presents the token before the expiration time (in
+    # seconds since the epoch), we login the user.
+    validation_token = db.Column(db.String(120))
+    validation_expiry_seconds = db.Column(db.Integer)
+    ## We'll want pointers to authorised activities.
+    ##   Automatically in case of gifts.
+    ##   Maybe user is authorised to modify survey results.
+    # posts = db.relationship('Post', backref='author', lazy='dynamic')
+    # followed = db.relationship(
+    #     'User', secondary=followers,
+    #     primaryjoin=(followers.c.follower_id == id),
+    #     secondaryjoin=(followers.c.followed_id == id),
+    #     backref=db.backref('followers', lazy='dynamic'), lazy='dynamic')
+
+    def __repr__(self):
+        return '<User {}>'.format(self.email)
+
+    #def set_password(self, password):
+    #    self.password_hash = generate_password_hash(password)
+
+    #def check_password(self, password):
+    #    return check_password_hash(self.password_hash, password)
+
+    def get_change_email_token(self, expires_in=600):
+        return jwt.encode(
+            {'change_email': self.id, 'exp': time() + expires_in},
+            current_app.config['SECRET_KEY'],
+            algorithm='HS256').decode('utf-8')
+
+    @staticmethod
+    def verify_change_email_token(token):
+        try:
+            id = jwt.decode(token, current_app.config['SECRET_KEY'],
+                            algorithms=['HS256'])['reset_password']
+        except:
+            return
+        return User.query.get(id)
+
+@login.user_loader
+def load_user(id):
+    return User.query.get(int(id))
 
 class Survey(db.Model):
     """Represent a survey.

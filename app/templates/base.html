@@ -24,6 +24,9 @@
             </div>  <!-- navbar-header -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
          <ul class="nav navbar-nav">
+	     {#
+	     {% if current_user.is_authenticated %} <li><a href="">Bienvenu</a></li> {% endif %}
+	     #}
          <li><a href="{{ url_for('main.index', tag=tag, seed=seed) }}">{{ 'Accueil' }}</a></li>
          <li><a href="{{ url_for('main.velopolitain', tag=tag, seed=seed) }}">{{ 'Vélopolitain' }}</a></li>
          <li><a href="{{ url_for('main.chronotrain', tag=tag, seed=seed) }}">{{ 'Chronotrain' }}</a></li>

@@ -73,7 +73,7 @@ def before_request():
         return
     #print(UserJourneyStep.query.all())
     journey_step = UserJourneyStep()
-    journey_step.ip_hash = md5(request.remote_addr.encode()).hexdigest();
+    journey_step.ip_hash = md5(request.remote_addr.encode()).hexdigest()
     journey_step.referrer = request.referrer
     if request.referrer:
         response = URL_REGEX.findall(request.referrer)

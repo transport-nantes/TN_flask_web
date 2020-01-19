@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block app_content %}
+    <h1>Vous identifier</h1>
+    <div class="row">
+        <div class="col-md-4">
+	    {% if message %}
+	    <p class="text-warning">{{ message }}
+	    </p>
+	    {% endif %}
+            {{ wtf.quick_form(form) }}
+        </div>
+    </div>
+
+    <p>
+	<hr>
+    </p>
+    <p>
+	Chez Transport Nantes, vous n'aurez jamais de mot de passe à
+	oublier.  Quand vous voulez vous identifier au site, il suffit de
+	fournir votre adresse mél.  Vous recevrez aussitôt un mél avec un
+	lien qui vous permet de connecter au site.
+    </p>
+    <p>
+	Une fois identifié vous aurez accès aux ressources dont vous
+	vous attendez.  Par exemple, si vous avez antérieurement fait
+	un don, vous pouvez vous identifier avec la même adresse mél
+	que vous avez fournie lors du don afin de demander un duplicata de
+	votre reçu fiscal.
+    </p>
+    <p>
+	Aussi, vous n'avez pas besoin de créer un compte.
+    <p>
+	Notice RGPD : Bien que (voir nos mentions légales) nous ne
+	vous trackons pas, lorsque vous êtes identifié au site, vous
+	pouvez prendre des actions qui laissent une trace
+	identifiable.  Par exemple, si vous faites un don, nous
+	gardons une trace afin de remplir nos obligations fiscales.
+	Si vous voulez que mêmes ces traces minimes soient effacées,
+	contactez-nous.  (Certaines obligations, surtout fiscales,
+	nous obligent toutefois à ne pas tout oublier.)
+    </p>
+
+{% endblock %}
