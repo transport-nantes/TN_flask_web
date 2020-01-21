@@ -3,7 +3,6 @@ from flask import render_template, flash, redirect, url_for, request, g, \
     jsonify, current_app, session
 from app import db
 from app.main import bp
-from app.main.survey import do_municipales_responses
 from app.models import UserJourneyStep
 from app.models import Survey, SurveyQuestion, SurveyResponder, SurveyResponse
 from random import randint
@@ -169,24 +168,6 @@ def about_transport_nantes(tag, seed=None):
 @bp.route('/D/<tag>/chantenay')
 def chantenay(tag, seed=None):
     return render_template('chantenay.html', tag=tag, seed=g.seed), 404
-
-@bp.route('/D/<tag>/municipales', defaults={'seed': None})
-@bp.route('/F/<tag>/<seed>/municipales')
-def municipales_responses(tag, seed):
-    """Display the municipal survey results.
-
-    Or guide the user to finding the results s/he wants.
-
-    This function is slightly borked, because it's not filtering on
-    survey id.  It should.  But for the moment there's only one survey
-    id, so put that off in the interests of getting this out.
-
-    """
-    return do_municipales_responses(tag, seed)
-
-@bp.route('/F/<tag>/<seed>/municipales-candidat')
-def municipales_candidats(tag, seed):
-    return render_template('municipales-survey.html', tag=tag, seed=g.seed)
 
 @bp.route('/F/<tag>/<seed>/sponsor')
 @bp.route('/D/<tag>/sponsor')

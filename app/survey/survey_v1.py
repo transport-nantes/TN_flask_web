@@ -2,7 +2,7 @@ from app import db
 from app.models import Survey, SurveyQuestion, SurveyResponder, SurveyResponse
 from flask import render_template, request, g, current_app, session
 
-def do_municipales_responses(tag, seed):
+def do_municipales_responses_v1(tag, seed):
     """Display the municipal survey results.
 
     Or guide the user to finding the results s/he wants.
@@ -26,7 +26,7 @@ def do_municipales_responses(tag, seed):
         # User has not yet selected a commune.  Unless there's not
         # choice to make, start by offering that choice.
         if len(communes) != 1:
-            return render_template('municipales-question.html', tag=tag, seed=g.seed,
+            return render_template('survey/question.html', tag=tag, seed=g.seed,
                                    communes=communes, this_commune=commune,
                                    listes=listes, this_liste=liste,
                                    questions=questions, this_question=question,
@@ -44,7 +44,7 @@ def do_municipales_responses(tag, seed):
         # Unless there's only one liste, in which case might as well
         # just choose it and be on our way.
         if len(listes) != 1:
-            return render_template('municipales-question.html', tag=tag, seed=g.seed,
+            return render_template('survey/question.html', tag=tag, seed=g.seed,
                                    communes=communes, this_commune=commune,
                                    listes=listes, this_liste=liste,
                                    questions=questions, this_question=question,
@@ -59,7 +59,7 @@ def do_municipales_responses(tag, seed):
     if question is None or '' == question:
         # We know commune and list/party, but not the question of
         # interest.  Request user to pick a question.
-        return render_template('municipales-question.html', tag=tag, seed=g.seed,
+        return render_template('survey/question.html', tag=tag, seed=g.seed,
                                    communes=communes, this_commune=commune,
                                    listes=listes, this_liste=liste,
                                    questions=questions, this_question=question,
@@ -83,7 +83,7 @@ def do_municipales_responses(tag, seed):
         survey_response = ["{TdL} n'a pas encore répondu à cette question.".format(
             TdL=responder[2])]
     # We know the question, so just display that one response.
-    return render_template('municipales-question.html', tag=tag, seed=g.seed,
+    return render_template('survey/question.html', tag=tag, seed=g.seed,
                            communes=communes, this_commune=commune,
                            listes=listes, this_liste=liste,
                            questions=questions, this_question=question,
