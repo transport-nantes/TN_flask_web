@@ -4,7 +4,6 @@ from flask import render_template, flash, redirect, url_for, request, g, \
 from app import db
 from app.main import bp
 from app.models import UserJourneyStep
-from app.models import Survey, SurveyQuestion, SurveyResponder, SurveyResponse
 from random import randint
 import re
 # md5 takes about 2-3 ns to run on my laptop, whilst sha1 takes 8-10
