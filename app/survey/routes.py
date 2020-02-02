@@ -50,44 +50,66 @@ def survey_edit(tag, seed):
     """
     # check_admin('survey')
     form = SurveyForm()
+    survey = None
     survey_id = request.args.get('survey_id', None)
-    if survey_id is None:
-        print('#### survey_id is None ####')
-        # This is a new survey, so we must start by creating it.
-        survey = Survey(name=form.name.data,
-                        description=form.description.data)
+    print('#### ', request.method, ' ####')
+    if request.method == 'POST':
+        print('#### POST ####')
         if form.validate_on_submit():
             print('#### validated ####')
-            try:
-                print('#### saving ####')
+            # The user may have changed the survey name, so first
+            # search based on the name.
+            survey = Survey.query.filter_by(name=form.name.data).one_or_none()
+            if survey is None and survey_id is not None:
+                print('#### no survey, yes survey_id ####', survey_id)
+                # If we didn't find the survey by name but we have a
+                # survey_id, then we should use that.
+                survey = Survey.query.filter_by(id=survey_id).one_or_none()
+            if survey is None:
+                print('#### no survey ####')
+                # If we still don't have a survey, then this is a new
+                # survey, so we must start by creating it.
+                print('#### New ####')
+                survey = Survey(name=form.name.data,
+                                description=form.description.data)
                 db.session.add(survey)
+            else:
+                print('#### yes survey ####')
+                survey.id = form.id.data
+                survey.name = form.name.data
+                survey.description = form.description.data
+            try:
+                print('#### Save ####')
                 db.session.commit()
-                print('#### committed ####')
+                print('#### Committed ####')
             except:
                 # If name already exists, for example.
                 # Even though we're editing, the user can change the name,
                 # and changing to existing isn't permitted.
                 #### How do I handle this?
                 #### I want to re-present the form with explanation message.
-                print('#### exception ####')
+                print('#### Exception ####')
                 db.session.rollback()
         else:
             # Problem with posted survey.
             #### How do we signal to the user what the error was??
-            return render_template('survey/mod_survey.html',
-                                   tag=tag, seed=seed,
-                                   form=form,
-                                   survey=survey,
-                                   questions=[])
-    else:
-        print('#### id is not none ####')
-        survey = Survey.query.filter_by(id=survey_id).first_or_404()
-        form.name.data = survey.name
-        form.description.data = survey.description
-    # We have a survey, so display it.
-    questions = survey.questions
+            pass
+        return render_template('survey/mod_survey.html',
+                               tag=tag, seed=seed,
+                               form=form,
+                               survey=survey,
+                               questions=survey.questions)
+
+    if survey_id is None:
+        print('#### survey_id is still none ####')
+        render_template(''), 404
+    print('#### survey_id is not none ####', survey_id)
+    survey = Survey.query.filter_by(id=survey_id).first_or_404()
+    form.id.data = survey_id
+    form.name.data = survey.name
+    form.description.data = survey.description
     return render_template('survey/mod_survey.html',
                            tag=tag, seed=seed,
                            form=form,
                            survey=survey,
-                           questions=questions)
+                           questions=survey.questions)

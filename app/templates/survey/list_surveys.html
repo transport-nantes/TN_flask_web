@@ -34,7 +34,7 @@
 {% block form %}
 <section>
   <h2>Ajouter nouveau :</h2>
-  <form action={{ url_for("survey.survey_edit", tag=tag, seed=seed) }} method=POST) }}"">
+  <form action="{{ url_for("survey.survey_edit", tag=tag, seed=seed) }}" method="POST") }}"">
       {{ form.name.label }}<br>{{ form.name }}<br>
       {{ form.description.label }}<br>{{ form.description }}<br>
       {{ form.csrf_token }}

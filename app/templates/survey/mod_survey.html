@@ -13,7 +13,8 @@
 
 <div class="container">
     <h2>Sondage</h2>
-    <form action="{{ url_for("survey.survey_edit", tag=tag, seed=seed, id=survey.id) }}" method="POST">
+    <form action="{{ url_for("survey.survey_edit", tag=tag, seed=seed, survey_id=survey.id) }}" method="POST">
+	{{ form.id }}
 	{{ form.name.label }}<br>{{ form.name }}<br>
 	{{ form.description.label }}<br>{{ form.description }}<br>
 	{{ form.csrf_token }}
@@ -37,7 +38,7 @@
             <td>{{ question.question_number }}</td>
             <td>{{ question.question_title }}</td>
             <td>{{ question.question_text|striptags|truncate(100) }}</td>
-	    <td> <a href="{{ url_for("survey.survey_edit", tag=tag, seed=seed, id=question.id) }}">
+	    <td> <a href="{{ url_for("survey.survey_edit", tag=tag, seed=seed, question_id=question.id) }}">
 		<span class="glyphicon glyphicon-pencil"></span>
             </a>
 	    </td>
