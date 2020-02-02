@@ -1,7 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, BooleanField, SubmitField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
-from flask_babel import _, lazy_gettext as _l
 from app.models import User
 
 
@@ -33,4 +32,4 @@ class RegistrationForm(FlaskForm):
 
 class ChangeEmailForm(FlaskForm):
     new_email = StringField('New email', validators=[DataRequired(), Email()])
-    submit = SubmitField(_l('Change Email'))
+    submit = SubmitField('Change Email')
