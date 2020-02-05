@@ -13,7 +13,8 @@
 
 <div class="container">
     <h2>Sondage</h2>
-    <form action="{{ url_for("survey.survey_edit", tag=tag, seed=seed, survey_id=survey.id) }}" method="POST">
+    <form action="{{ url_for("survey.survey_edit", tag=tag, seed=seed, survey_id=survey.id) }}"
+	  method="POST">
 	{{ form.id }}
 	{{ form.name.label }}<br>{{ form.name }}<br>
 	{{ form.description.label }}<br>{{ form.description }}<br>
@@ -24,36 +25,43 @@
 
 {% block form %}
 <section>
-  <h2>Questions :</h2>
-  <table class="table table-hover">
-    <thead>
-      <tr>
-        <th>Nom du sondage</th>
-        <th>Description du sondage</th>
-      </tr>
-    </thead>
-    <tbody>
-	{% for question in questions %}
-	<tr>
-            <td>{{ question.question_number }}</td>
-            <td>{{ question.question_title }}</td>
-            <td>{{ question.question_text|striptags|truncate(100) }}</td>
-	    <td> <a href="{{ url_for("survey.survey_edit", tag=tag, seed=seed, question_id=question.id) }}">
-		<span class="glyphicon glyphicon-pencil"></span>
-            </a>
-	    </td>
-	</tr>
-	{% endfor %}
-	<tr>
-	    <td></td>
-	    <td></td>
-	    <td></td>
-	    <td><a href="#">
-		<span class="glyphicon glyphicon-plus"></span>
-            </a></td>
-	</tr>
-    </tbody>
-  </table>
+    <h2>Questions :</h2>
+    <form action="{{ url_for("survey.question_edit", tag=tag, seed=seed, survey_id=survey.id) }}"
+	method="POST">
+	<table class="table table-hover">
+	    <thead>
+		<tr>
+		    <th>Numéro</th>
+		    <th>Titre</th>
+		    <th>Texte </th>
+		</tr>
+	    </thead>
+	    <tbody>
+		{% for question in questions %}
+		<tr>
+		    <td>{{ question.question_number }}</td>
+		    <td>{{ question.question_title }}</td>
+		    <td>{{ question.question_text|striptags|truncate(100) }}</td>
+		    <td> <a href="{{ url_for("survey.question_edit",
+			    tag=tag, seed=seed,
+			    survey_id=survey.id, question_id=question.id) }}">
+			<span class="glyphicon glyphicon-pencil"></span>
+		    </a>
+		    </td>
+		</tr>
+		{% endfor %}
+		<tr>{{ new_question_form.id }} {{ new_question_form.survey_id }}
+		    <td>{{ new_question_form.question_number }}</td>
+		    <td>{{ new_question_form.question_title }}</td>
+		    <td>{{ new_question_form.question_text }}</td>
+		    {{ new_question_form.csrf_token }}
+		    <td><button type="submit" class="submit-with-icon">
+			<span class="glyphicon glyphicon-plus"></span>
+		    </button></td>
+		</tr>
+	    </tbody>
+	</table>
+    </form>
 </section>
 {% endblock form %}  
 

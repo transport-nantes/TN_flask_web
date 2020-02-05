@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block app_content %}
+<div class="row">
+    <div class="col-lg-12">
+	<h1> <a href="{{ url_for("survey.survey_edit", tag=tag, seed=seed,
+		survey_id=question.survey_id) }}">
+          <span class="glyphicon glyphicon-arrow-left"></span>
+        </a>
+	Question {{ question.question_number }}</h1>
+    </div>
+</div>
+
+<div class="container">
+    <form action="{{ url_for("survey.question_edit", tag=tag, seed=seed,
+	  survey_id=survey_id,
+	  question_id=question.id) }}" method="POST">
+	{{ form.id }}
+	{{ form.question_number.label }}<br>{{ form.question_number }}<br>
+	{% for error in form.question_number.errors %}
+	   <span style="color: red;">[{{ error }}]</span><br>
+	{% endfor %}
+	{{ form.sort_index.label }}<br>{{ form.sort_index }}<br>
+	{% for error in form.sort_index.errors %}
+	   <span style="color: red;">[{{ error }}]</span><br>
+	{% endfor %}
+	{{ form.question_title.label }}<br>{{ form.question_title }}<br>
+	{% for error in form.question_title.errors %}
+	   <span style="color: red;">[{{ error }}]</span><br>
+	{% endfor %}
+	{{ form.question_text.label }}<br>{{ form.question_text(cols="80", rows="20") }}<br>
+	{% for error in form.question_text.errors %}
+	   <span style="color: red;">[{{ error }}]</span><br>
+	{% endfor %}
+	{{ form.csrf_token }}
+	<input type="submit" value="Modifier">
+    </form>
+</div>
+
+{% endblock %}
