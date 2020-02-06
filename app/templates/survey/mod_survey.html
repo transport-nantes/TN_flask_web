@@ -23,7 +23,6 @@
     </form>
 </div>
 
-{% block form %}
 <section>
     <h2>Questions :</h2>
     <form action="{{ url_for("survey.question_edit", tag=tag, seed=seed, survey_id=survey.id) }}"
@@ -32,6 +31,7 @@
 	    <thead>
 		<tr>
 		    <th>Numéro</th>
+		    <th>Ordre de tri</th>
 		    <th>Titre</th>
 		    <th>Texte </th>
 		</tr>
@@ -40,6 +40,7 @@
 		{% for question in questions %}
 		<tr>
 		    <td>{{ question.question_number }}</td>
+		    <td>{{ question.sort_index }}</td>
 		    <td>{{ question.question_title }}</td>
 		    <td>{{ question.question_text|striptags|truncate(100) }}</td>
 		    <td> <a href="{{ url_for("survey.question_edit",
@@ -52,6 +53,7 @@
 		{% endfor %}
 		<tr>{{ new_question_form.id }} {{ new_question_form.survey_id }}
 		    <td>{{ new_question_form.question_number }}</td>
+		    <td>{{ new_question_form.sort_index }}</td>
 		    <td>{{ new_question_form.question_title }}</td>
 		    <td>{{ new_question_form.question_text }}</td>
 		    {{ new_question_form.csrf_token }}
@@ -59,10 +61,74 @@
 			<span class="glyphicon glyphicon-plus"></span>
 		    </button></td>
 		</tr>
+		<tr>
+		    <td>{% for error in new_question_form.question_number.errors %}
+			<span style="color: red;">[{{ error }}]</span>{% endfor %}</td>
+		    <td>{% for error in new_question_form.sort_index.errors %}
+			<span style="color: red;">[{{ error }}]</span>{% endfor %}</td>
+		    <td>{% for error in new_question_form.question_title.errors %}
+			<span style="color: red;">[{{ error }}]</span>{% endfor %}</td>
+		    <td>{% for error in new_question_form.question_text.errors %}
+			<span style="color: red;">[{{ error }}]</span>{% endfor %}</td>
+		</tr>
+
 	    </tbody>
 	</table>
     </form>
 </section>
-{% endblock form %}  
+
+<section>
+    <h2>Cibles :</h2>
+    <p>Listes ou partis dont les réponses sont attendus.</p>
+
+    <form action="{{ url_for("survey.target_edit", tag=tag, seed=seed, survey_id=survey.id) }}"
+	method="POST">
+	<table class="table table-hover">
+	    <thead>
+		<tr>
+		    <th>Commune</th>
+		    <th>Liste</th>
+		    <th>Tête de liste</th>
+		    <th>Validé</th>
+		</tr>
+	    </thead>
+	    <tbody>
+		{% for target in targets %}
+		<tr>
+		    <td>{{ target.commune }}</td>
+		    <td>{{ target.liste }}</td>
+		    <td>{{ target.tete_de_liste }}</td>
+		    <td>{{ target.validated }}</td>
+		    <td> <a href="{{ url_for("survey.target_edit",
+			    tag=tag, seed=seed,
+			    survey_id=survey.id, target_id=target.id) }}">
+			<span class="glyphicon glyphicon-pencil"></span>
+		    </a>
+		    </td>
+		</tr>
+		{% endfor %}
+		<tr>{{ new_target_form.id }} {{ new_target_form.survey_id }}
+		    <td>{{ new_target_form.commune }}</td>
+		    <td>{{ new_target_form.liste }}</td>
+		    <td>{{ new_target_form.tete_de_liste }}</td>
+		    <td></td>
+		    {{ new_target_form.csrf_token }}
+		    <td><button type="submit" class="submit-with-icon">
+			<span class="glyphicon glyphicon-plus"></span>
+		    </button></td>
+		</tr>
+		<tr>
+		    <td>{% for error in new_target_form.commune.errors %}
+			<span style="color: red;">[{{ error }}]</span>{% endfor %}</td>
+		    <td>{% for error in new_target_form.liste.errors %}
+			<span style="color: red;">[{{ error }}]</span>{% endfor %}</td>
+		    <td>{% for error in new_target_form.tete_de_liste.errors %}
+			<span style="color: red;">[{{ error }}]</span>{% endfor %}</td>
+		    <td></td>
+		</tr>
+	    </tbody>
+	</table>
+    </form>
+</section>
 
 {% endblock %}

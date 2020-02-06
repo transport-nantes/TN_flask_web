@@ -17,3 +17,14 @@ class SurveyQuestionForm(FlaskForm):
     sort_index = IntegerField('Position de trie')
     question_title = StringField('Titre', validators=[DataRequired()])
     question_text = StringField('Titre', widget=TextArea(), validators=[DataRequired()])
+
+class SurveyTargetForm(FlaskForm):
+    id = HiddenField('id')
+    survey_id = HiddenField('survey_id')
+    validated = BooleanField('Validé')
+    commune = StringField('Commune')
+    liste = StringField('Liste')
+    tete_de_liste = StringField('Tête de liste')
+    url = StringField('URL')
+    twitter_liste = StringField('twitter')
+    facebook = StringField('facebook')

@@ -198,6 +198,7 @@ class SurveyTarget(db.Model):
     validated = db.Column(db.Boolean)
     commune = db.Column(db.String)
     liste = db.Column(db.String)
+    tete_de_liste = db.Column(db.String)
 
     url = db.Column(db.String)
     twitter_liste = db.Column(db.String)
