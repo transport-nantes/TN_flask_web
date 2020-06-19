@@ -12,10 +12,23 @@
     </div>
 </div>
 
+<div class="btn-group btn-group-inline">
+    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+	{{ this_question.question_number }}
+	<span class="caret"></span></button>
+    <ul class="dropdown-menu">
+	{% for question in questions %}
+	<li><a href="{{ url_for('survey.response_edit', tag=tag, seed=seed,
+		     target_id=target_id, survey_id=survey_id,
+		     this_question_id=question.id) }}">{{ question.question_number }}</a></li>
+	{% endfor %}
+    </ul>
+</div>
+
 <div class="container">
-    <form action="{{ url_for("survey.question_edit", tag=tag, seed=seed,
-	  survey_id=survey_id,
-	  question_id=question.id) }}" method="POST">
+    <form action="{{ url_for("survey.response_edit", tag=tag, seed=seed,
+	  target_id=target_id, survey_id=survey_id,
+	  this_question_id=this_question.id) }}" method="POST">
 	{{ form.id }}
 	{{ form.question_number.label }}<br>{{ form.question_number }}<br>
 	{% for error in form.question_number.errors %}

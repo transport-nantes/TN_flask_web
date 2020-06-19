@@ -227,6 +227,8 @@ class SurveyResponder(db.Model):
     # party/list and for one survey.  If they wish to respond to
     # another survey, they'll need to be revalidated.
     survey_id = db.Column(db.Integer, db.ForeignKey(Survey.id), nullable=False)
+    # The target_id should not be null, but we need to transition to that.
+    target_id = db.Column(db.Integer, db.ForeignKey(SurveyTarget.id), nullable=True)
 
     # In a self-service context, we'll use validated to indicate that
     # we've confirmed that the person is authorised to reply for the
@@ -242,12 +244,11 @@ class SurveyResponder(db.Model):
     sortant = db.Column(db.Boolean)
     ################ End obsolete fields ################
 
-    # The email_liste is the official email for the list or party, if
-    # we know it.  The email_person is the specific email of the
-    # person who is responding, if we know it.  When we provide
-    # self-service, the intent is that email_person is the mail that
-    # will be asked to verify that a contribution or change is
-    # legimiate (i.e., used for login/authentication).
+    # The email_person is the specific email of the person who is
+    # responding, if we know it.  When we provide self-service, the
+    # intent is that email_person is the mail that will be asked to
+    # verify that a contribution or change is legimiate (i.e., used
+    # for login/authentication).
     email_person = db.Column(db.String)
 
     ################ Remaining fields are obsolete and may be deleted
@@ -271,7 +272,9 @@ class SurveyResponse(db.Model):
 
     survey_id = db.Column(db.Integer, db.ForeignKey(Survey.id), nullable=False)
     survey_question_id = db.Column(db.Integer, db.ForeignKey(SurveyQuestion.id), nullable=False)
-    survey_responder_id = db.Column(db.Integer, db.ForeignKey(SurveyResponder.id), nullable=False)
+    # Survey_responder_id is nullable because we haven't implemented
+    # making responders yet.
+    survey_responder_id = db.Column(db.Integer, db.ForeignKey(SurveyResponder.id), nullable=True)
     # survey_target_id is nullable due to history.  We have to create
     # the column before we can set the value.  But, in principle, it
     # should never be null.

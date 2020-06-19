@@ -90,6 +90,7 @@
 		    <th>Liste</th>
 		    <th>Tête de liste</th>
 		    <th>Validé</th>
+		    <th>Cible|Réponses</th>
 		</tr>
 	    </thead>
 	    <tbody>
@@ -98,12 +99,26 @@
 		    <td>{{ target.commune }}</td>
 		    <td>{{ target.liste }}</td>
 		    <td>{{ target.tete_de_liste }}</td>
-		    <td>{{ target.validated }}</td>
+		    <td>{% if target.validated %}
+			<span class="glyphicon glyphicon-ok"></span>
+			{% else %}
+			<span class="glyphicon glyphicon-remove"></span>
+			{% endif %}
+		    </td>
 		    <td> <a href="{{ url_for("survey.target_edit",
 			    tag=tag, seed=seed,
 			    survey_id=survey.id, target_id=target.id) }}">
 			<span class="glyphicon glyphicon-pencil"></span>
 		    </a>
+		    &nbsp;
+		    {% if questions|length > 0 %}
+		    <a href="{{ url_for("survey.response_edit",
+			    tag=tag, seed=seed,
+			    survey_id=survey.id,
+			    target_id=target.id) }}">
+			<span class="glyphicon glyphicon-question-sign"></span>
+		    </a>
+		    {% endif %}
 		    </td>
 		</tr>
 		{% endfor %}

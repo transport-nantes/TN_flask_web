@@ -4,8 +4,8 @@ from werkzeug.urls import url_parse
 from flask import current_app as app
 from flask_login import login_user, logout_user, current_user, login_required
 from app import db
-from app.models import Survey, SurveyQuestion, SurveyTarget
-from app.survey.forms import SurveyForm, SurveyQuestionForm, SurveyTargetForm
+from app.models import Survey, SurveyQuestion, SurveyTarget, SurveyResponse, SurveyResponder
+from app.survey.forms import SurveyForm, SurveyQuestionForm, SurveyTargetForm, SurveyResponseForm
 from app.survey import bp
 from app.survey.survey_v1 import do_municipales_responses_v1
 import sys
@@ -234,6 +234,87 @@ def target_edit(tag, seed):
     # Else GET.
     print('#### GET ####')
     target_form.id.data = target_id
+    if target is None:
+        print('#### no target ####')
+        target_form.validate.data = False
+    else:
+        print('#### target ####')
+        target_form.validated.data = target.validated
+        target_form.commune.data = target.commune
+        target_form.liste.data = target.liste
+        target_form.tete_de_liste.data = target.tete_de_liste
+        target_form.url.data = target.url
+        target_form.twitter_liste.data = target.twitter_liste
+    print('#### render 2 ####')
+    return render_template('survey/mod_target.html',
+                           tag=tag, seed=seed,
+                           survey_id=survey_id,
+                           target_form=target_form)
+
+@login_required
+@bp.route('/F/<tag>/<seed>/edit/response', methods=['GET', 'POST'])
+def response_edit(tag, seed):
+    """Create or modify a survey response.
+
+    Survey responses are the answers that targets provide to
+    individual questions in individual surveys.
+
+    """
+    # check_admin('survey')
+    print('#### 1 ####')
+    response_form = SurveyResponseForm()
+    target_id = request.args.get('target_id', response_form.target_id.data)
+    survey_id = request.args.get('survey_id', response_form.survey_id.data)
+    if target_id:
+        target = SurveyTarget.query.filter_by(id=target_id).one_or_none()
+    else:
+        target = None
+    ## responders = SurveyResponder.query.filter_by(survey_id=survey_id, target_id=target_id)
+    # We shouldn't be here if there are no questions.
+    questions = SurveyQuestion.query.filter_by(survey_id=survey_id).order_by(
+                                    SurveyQuestion.sort_index.asc()).all()
+    this_question_id = request.args.get('question_id', questions[0].id)
+    this_question = [q for q in questions if q.id == this_question_id][0]
+    response = SurveyResponse.query.filter_by(survey_id=survey_id,
+                                              survey_question_id=this_question_id,
+                                              survey_target_id=target_id)
+    if request.method == 'POST':
+        print('#### POST ####')
+        if response_form.validate_on_submit():
+            if response is None:
+                print('#### no response ####')
+                response = SurveyResponse(
+                    survey_id=survey_id,
+                    survey_question_id=this_question_id,
+                    survey_target_id=target_id)
+                db.session.add(target)
+            else:
+                print('#### response ####')
+                response.id = target_id
+                response.survey_id = survey_id
+                response.survey_question_id = response_form.question_id.data
+                response.survey_target_id = response_form.target_id.data
+            try:
+                print('#### committing ####')
+                db.session.commit()
+                print('#### commit ####')
+                return redirect(url_for('survey.response_edit',
+                                        tag=tag, seed=seed,
+                                        survey_id=survey_id,
+                                        target_id=target_id,
+                                        question_id=this_question_id))
+            except:
+                db.session.rollback()
+                print('#### rollback ####')
+        # If not validated or if validated and commit failed, redisplay.
+        print('#### render 1 ####')
+        return render_template('survey/mod_question.html',
+                               tag=tag, seed=seed,
+                               survey_id=survey_id,
+                               target_form=target_form)
+    # Else GET.
+    print('#### GET ####')
+    response_form.id.data = target_id
     if target is None:
         print('#### no target ####')
         target_form.validate.data = False

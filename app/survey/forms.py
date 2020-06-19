@@ -28,3 +28,11 @@ class SurveyTargetForm(FlaskForm):
     url = StringField('URL')
     twitter_liste = StringField('twitter')
     facebook = StringField('facebook')
+
+class SurveyResponseForm(FlaskForm):
+    id = HiddenField('id')
+    survey_id = HiddenField('survey_id')
+    question_id = HiddenField('question_id')
+    responder_id = HiddenField('responder_id')
+    target_id = HiddenField('target_id')
+    the_response = StringField('Réponse', widget=TextArea(), validators=[DataRequired()])
